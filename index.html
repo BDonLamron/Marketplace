@@ -1,0 +1,511 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Synthetic Nexus Market — polished one-page marketplace SPA" />
+  <title>Synthetic Nexus Market</title>
+  <style>
+    :root {
+      --bg:#050009;--bg-soft:#130423;--panel:#17082df2;--panel-2:#210c3ff2;--line:#ff00aa66;
+      --txt:#f5efff;--muted:#b99dd4;--pink:#ff00aa;--red:#ff2f69;--cyan:#00f5ff;--green:#44f0ba;--warn:#ffcb62;--danger:#ff6e9f;
+      --shadow:0 0 24px rgba(255,0,170,.3)
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Courier New",monospace;background:var(--bg);color:var(--txt);overflow-x:hidden}
+    body::before{content:"";position:fixed;inset:0;pointer-events:none;background-image:linear-gradient(rgba(255,0,130,.05) 1px,transparent 1px),linear-gradient(90deg,rgba(0,245,255,.035) 1px,transparent 1px);background-size:40px 40px;z-index:0}
+    @keyframes glow{0%,100%{box-shadow:0 0 0 rgba(255,0,170,0)}50%{box-shadow:0 0 16px rgba(255,0,170,.25)}}
+    @keyframes pulse{0%,100%{opacity:.4}50%{opacity:1}}
+    @keyframes flip{0%{transform:rotateX(0) rotateY(0)}100%{transform:rotateX(2160deg) rotateY(2160deg)}}
+
+    .app{position:relative;z-index:1}
+    header{position:sticky;top:0;z-index:50;display:grid;grid-template-columns:220px 1fr 260px;gap:12px;align-items:center;padding:12px 16px;background:linear-gradient(#090013,#090013f4);border-bottom:1px solid var(--pink);box-shadow:var(--shadow)}
+    .brand{color:var(--red);font-weight:700;text-shadow:0 0 12px var(--red);white-space:nowrap}
+    .top-nav{display:flex;justify-content:center;gap:16px;flex-wrap:wrap}
+    .top-nav button{all:unset;cursor:pointer;color:var(--txt);font-size:14px}
+    .top-nav button.active,.top-nav button:hover{color:var(--cyan);text-shadow:0 0 8px var(--cyan)}
+    .top-right{display:flex;justify-content:flex-end;gap:8px}
+    .chip{border:1px solid var(--pink);background:#1f0a2f;color:var(--txt);border-radius:8px;padding:7px 10px;cursor:pointer;font-family:inherit;position:relative}
+
+    .layout{width:min(1700px,calc(100% - 20px));margin:12px auto;display:grid;grid-template-columns:280px minmax(760px,1fr) 360px;gap:12px}
+    .panel{background:var(--panel);border:1px solid var(--line);border-radius:10px;box-shadow:var(--shadow)}
+    aside.left,aside.right{padding:12px;position:sticky;top:74px;max-height:calc(100vh - 86px);overflow:auto}
+    .title{margin:0 0 8px;color:var(--pink);text-shadow:0 0 7px var(--pink);font-size:14px}
+    .section{margin-top:12px;padding-top:10px;border-top:1px solid #3b1657}
+    .muted{color:var(--muted);font-size:12px}.money{color:var(--green)}
+
+    input,select,textarea,button{font-family:inherit}
+    input,select,textarea{width:100%;border:1px solid var(--pink);background:var(--bg-soft);color:var(--txt);border-radius:7px;padding:8px}
+    textarea{resize:vertical}
+    .btn{border:1px solid var(--pink);border-radius:7px;background:linear-gradient(#ff1f60,#a40044);color:#fff;padding:7px 9px;cursor:pointer;font-weight:700}
+    .btn.secondary{background:#240d37;border-color:var(--cyan)}
+    .btn.warn{background:#45300b;border-color:var(--warn);color:#ffe0a6}
+    .btn.danger{background:#3b1325;border-color:var(--danger);color:#ffc6d8}
+    .cat-btn{width:100%;text-align:left;border:1px solid transparent;background:transparent;color:var(--txt);border-radius:6px;padding:8px;margin-bottom:5px;cursor:pointer}
+    .cat-btn:hover,.cat-btn.active{background:#2d0d42;border-color:var(--pink)}
+
+    .tools{padding:12px;display:grid;grid-template-columns:1.4fr 1fr 1fr auto;gap:8px;align-items:center}
+    .hero{text-align:center;margin:8px 0 14px;color:var(--red);font-size:40px;text-shadow:0 0 14px var(--red)}
+    .live-dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:8px;background:var(--green);animation:pulse 1s infinite}
+    .mini-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:0 12px 10px}
+    .mini{border:1px solid #4a1b67;border-radius:8px;background:#1a0830;padding:8px;font-size:11px}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:10px;padding:0 12px 12px}
+    .card{background:var(--panel-2);border:1px solid var(--pink);border-radius:9px;overflow:hidden;animation:glow 3s infinite}
+    .card img{width:100%;height:150px;object-fit:cover}
+    .card-body{padding:9px}
+    .name{margin:0 0 6px;color:var(--cyan);text-shadow:0 0 6px var(--cyan);font-size:16px}
+    .price{margin:6px 0;color:var(--green);font-size:18px}
+    .row{display:flex;justify-content:space-between;align-items:center;gap:8px}
+    .pagination{display:flex;justify-content:center;align-items:center;gap:8px;padding:0 12px 14px}
+    .pill{border:1px solid #612d95;background:#1a0630;border-radius:999px;padding:5px 10px;font-size:12px}
+    .list-item{border-bottom:1px solid #3a1456;padding:8px 0;font-size:12px}
+    .feed-tag{display:inline-block;font-size:10px;color:#a7e6ff;border:1px solid #2d74ab;border-radius:999px;padding:1px 7px;margin-bottom:5px}
+
+    .modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:rgba(0,0,0,.84);z-index:80;padding:10px}
+    .modal-box{width:min(960px,100%);max-height:90vh;overflow:auto;padding:14px}
+    .detail-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .coin{width:120px;height:120px;margin:10px auto;border-radius:50%;display:grid;place-items:center;font-size:22px;font-weight:700;border:3px solid #ffd580;background:radial-gradient(circle at 30% 30%,#ffd580,#ae720f)}
+    .coin.flipping{animation:flip 1.75s cubic-bezier(.2,.8,.2,1)}
+
+    .toast{position:fixed;right:12px;bottom:12px;z-index:100;display:none;padding:8px 12px;border-radius:7px;color:#fff}
+
+    @media (max-width:1450px){.layout{grid-template-columns:260px 1fr}.tools{grid-template-columns:1fr 1fr}.right{position:static;grid-column:span 2;max-height:none}}
+    @media (max-width:980px){header{grid-template-columns:1fr;justify-items:center}.top-right{justify-content:center}.layout{grid-template-columns:1fr}.tools{grid-template-columns:1fr}.left,.right{position:static;max-height:none}.hero{font-size:32px}.detail-grid{grid-template-columns:1fr}.mini-strip{grid-template-columns:1fr 1fr}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand">SYNTHETIC NEXUS</div>
+    <nav class="top-nav" id="mainNav">
+      <button data-view="home" class="active">HOME</button>
+      <button data-action="categories">CATEGORIES</button>
+      <button data-action="vendors">VENDORS</button>
+      <button data-action="features">FEATURES</button>
+      <button data-action="profile">PROFILE</button>
+      <button data-action="leaderboard">LEADERBOARD</button>
+      <button data-action="support">SUPPORT</button>
+      <button data-action="auth">LOGIN</button>
+    </nav>
+    <div class="top-right">
+      <button class="chip" id="notifBtn">🔔 <span id="notifCount">0</span></button>
+      <button class="chip" id="wishBtn">♥ <span id="wishCount">0</span></button>
+      <button class="chip" id="cartBtn">🛒 <span id="cartCount">0</span></button>
+    </div>
+  </header>
+
+  <div class="layout">
+    <aside class="left panel" id="categoryPane">
+      <h3 class="title">CATEGORIES</h3>
+      <div id="categoryList"></div>
+
+      <div class="section">
+        <h4 class="title">PRICE RANGE</h4>
+        <input id="minPrice" type="number" min="0" step="1" placeholder="Min" />
+        <div style="height:7px"></div>
+        <input id="maxPrice" type="number" min="0" step="1" placeholder="Max" />
+      </div>
+
+      <div class="section">
+        <h4 class="title">MIN RATING</h4>
+        <select id="minRating"><option value="0">Any</option><option value="3.5">3.5+</option><option value="4">4.0+</option><option value="4.5">4.5+</option></select>
+      </div>
+
+      <div class="section">
+        <h4 class="title">SLA FILTER</h4>
+        <select id="slaFilter"><option value="all">All Vendors</option><option value="gold">Gold SLA</option><option value="silver">Silver SLA</option><option value="bronze">Bronze SLA</option></select>
+      </div>
+
+      <div class="section" id="adminCategorySection" style="display:none">
+        <h4 class="title">ADMIN CATEGORY MANAGER</h4>
+        <div id="adminCategoryList"></div>
+        <input id="newCategoryName" placeholder="New category name" />
+        <div style="height:7px"></div>
+        <button class="btn secondary" id="addCategoryBtn">ADD CATEGORY</button>
+      </div>
+
+      <div class="section">
+        <h4 class="title">SITE METRICS</h4>
+        <p class="muted">Products: <span id="statProducts"></span></p>
+        <p class="muted">Vendors: <span id="statVendors"></span></p>
+        <p class="muted">Orders: <span id="statOrders"></span></p>
+        <p class="muted">Users: <span id="statUsers"></span></p>
+      </div>
+
+      <div class="section">
+        <h4 class="title">RECENTLY VIEWED</h4>
+        <div id="recentViewed"></div>
+      </div>
+    </aside>
+
+    <main class="panel">
+      <div class="tools">
+        <input id="searchInput" placeholder="SEARCH MARKET... (name / desc / vendor)" />
+        <select id="sortSelect"><option value="featured">Sort by Featured</option><option value="priceAsc">Price Low → High</option><option value="priceDesc">Price High → Low</option><option value="ratingDesc">Rating High → Low</option><option value="newest">Newest</option></select>
+        <select id="shippingFilter"><option value="all">Shipping: All</option><option value="1">1-Day</option><option value="2">2-Day</option><option value="3">3-Day+</option></select>
+        <button class="btn secondary" id="clearFilters">Reset Filters</button>
+      </div>
+      <h1 class="hero"><span class="live-dot"></span>LIVE MARKET • FEB 09 2026</h1>
+
+      <div class="mini-strip">
+        <div class="mini">Top Vendor: <strong id="topVendor"></strong></div>
+        <div class="mini">Avg Rating: <strong id="avgRating"></strong></div>
+        <div class="mini">Low Stock Alerts: <strong id="lowStockCount"></strong></div>
+        <div class="mini">Open Tickets: <strong id="openTicketsCount"></strong></div>
+      </div>
+
+      <section class="grid" id="productGrid"></section>
+      <div class="pagination"><button class="btn secondary" id="prevPage">Previous</button><span class="pill" id="pageInfo">Page 1 of 1</span><button class="btn secondary" id="nextPage">Next</button></div>
+    </main>
+
+    <aside class="right panel">
+      <h3 class="title">ACCOUNT</h3>
+      <div id="accountBlock" class="muted"></div>
+      <div style="height:8px"></div>
+      <button class="btn secondary" id="authToggleBtn">Sign In</button>
+
+      <div class="section">
+        <h4 class="title">WALLET</h4>
+        <p>Balance: <span class="money" id="walletBalance"></span></p>
+        <div class="row"><input id="depositAmount" type="number" min="1" value="100" /><button class="btn secondary" id="depositBtn">Deposit</button></div>
+        <div style="height:6px"></div>
+        <div class="row"><input id="withdrawAmount" type="number" min="1" value="50" /><button class="btn warn" id="withdrawBtn">Withdraw</button></div>
+        <div id="walletLedger"></div>
+      </div>
+
+      <div class="section">
+        <h4 class="title">CART</h4>
+        <div id="cartList"></div>
+        <div class="row"><span>Total</span><span class="money" id="cartSubtotal">$0.00</span></div>
+        <div class="row"><span>Tax (8%)</span><span class="money" id="cartTax">$0.00</span></div>
+        <div class="row"><span>Shipping</span><span class="money" id="cartShipping">$0.00</span></div>
+        <div class="row"><span>Discount</span><span class="money" id="cartDiscount">-$0.00</span></div>
+        <div class="row"><strong>Grand Total</strong><strong class="money" id="cartGrand">$0.00</strong></div>
+        <div style="height:7px"></div>
+        <input id="recipientName" placeholder="Recipient name" />
+        <div style="height:7px"></div>
+        <textarea id="shippingAddress" rows="2" placeholder="Shipping address"></textarea>
+        <div style="height:7px"></div>
+        <select id="paymentMethod"><option value="card">Credit Card</option><option value="paypal">PayPal</option><option value="wire">Bank Transfer</option></select>
+        <div style="height:7px"></div>
+        <select id="shippingMethod"><option value="standard">Standard Shipping ($0)</option><option value="express">Express Shipping ($12)</option></select>
+        <div style="height:7px"></div>
+        <input id="couponCode" placeholder="Coupon (SAVE10)" />
+        <div style="height:7px"></div>
+        <button class="btn" id="checkoutBtn">Place Order</button>
+      </div>
+
+      <div class="section"><h4 class="title">RECENT ORDERS</h4><div id="orderList"></div></div>
+
+      <div class="section">
+        <h4 class="title">COINFLIP (FAIR)</h4>
+        <p class="muted">Fair 50/50 result with transparent wallet accounting.</p>
+        <div class="row"><input id="coinflipAmount" type="number" min="1" value="25" /><select id="coinflipPick" style="max-width:120px"><option>Heads</option><option>Tails</option></select></div>
+        <div style="height:7px"></div>
+        <button class="btn warn" id="coinflipBtn">CONFIRM BET</button>
+        <div id="coinflipHistory"></div>
+      </div>
+
+      <div class="section"><h4 class="title">LIVE MARKET CHAT</h4><span class="feed-tag">SIMULATED ACTIVITY FEED</span><div id="chatFeed"></div></div>
+
+      <div class="section" id="vendorConsole" style="display:none">
+        <h4 class="title">VENDOR CONSOLE</h4>
+        <input id="vendorProductName" placeholder="Product name" />
+        <div style="height:6px"></div>
+        <input id="vendorProductPrice" type="number" min="1" placeholder="Price" />
+        <div style="height:6px"></div>
+        <input id="vendorProductCategory" placeholder="Category" />
+        <div style="height:6px"></div>
+        <input id="vendorProductStock" type="number" min="1" placeholder="Stock" />
+        <div style="height:6px"></div>
+        <button class="btn secondary" id="addVendorProductBtn">ADD LISTING</button>
+        <div id="vendorStats"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="modal" id="productModal"><div class="panel modal-box" id="productModalBody"></div></div>
+  <div class="modal" id="vendorsModal"><div class="panel modal-box"><h2 class="title">VERIFIED VENDORS</h2><div id="vendorsModalBody"></div></div></div>
+  <div class="modal" id="featuresModal"><div class="panel modal-box"><h2 class="title">SITE FEATURES</h2><ul id="featuresModalBody"></ul></div></div>
+  <div class="modal" id="profileModal"><div class="panel modal-box" style="max-width:700px"><h2 class="title">PROFILE</h2><div id="profileModalBody"></div></div></div>
+  <div class="modal" id="leaderboardModal"><div class="panel modal-box" style="max-width:700px"><h2 class="title">LEADERBOARD</h2><div id="leaderboardModalBody"></div></div></div>
+  <div class="modal" id="supportModal"><div class="panel modal-box" style="max-width:760px"><h2 class="title">SUPPORT CENTER</h2><div id="supportModalBody"></div></div></div>
+  <div class="modal" id="notificationsModal"><div class="panel modal-box" style="max-width:620px"><h2 class="title">NOTIFICATIONS</h2><div id="notificationsModalBody"></div></div></div>
+
+  <div class="modal" id="authModal"><div class="panel modal-box" style="max-width:560px"><h2 class="title">ACCOUNT ACCESS</h2><h4 style="margin:8px 0">Email Login</h4><input id="authEmail" type="email" placeholder="Email"/><div style="height:7px"></div><input id="authPassword" type="password" placeholder="Password"/><div style="height:7px"></div><select id="authRole"><option value="member">Member</option><option value="vendor">Vendor</option></select><div style="height:8px"></div><div class="row"><button class="btn secondary" id="registerBtn">Create Account</button><button class="btn" id="loginBtn">Sign In</button></div><div class="section"><h4 class="title">PGP SIGN-IN (ADMIN CAPABLE)</h4><p class="muted">First valid PGP key on this browser becomes admin fingerprint.</p><textarea id="pgpKeyInput" rows="7" placeholder="-----BEGIN PGP PUBLIC KEY BLOCK-----"></textarea><div style="height:7px"></div><button class="btn" id="pgpLoginBtn">LOGIN WITH PGP</button></div></div></div>
+  <div class="modal" id="coinflipModal"><div class="panel modal-box" style="max-width:420px;text-align:center"><h2 class="title">COINFLIP RESULT</h2><div class="coin" id="coinVisual">?</div><p id="coinResultText"></p><button class="btn secondary" onclick="closeModal('coinflipModal')">Close</button></div></div>
+
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+const DEFAULT_PRODUCTS=[
+{id:1,name:"Neon Arc Keyboard",price:129,category:"Electronics",vendor:"NexusGear",rating:4.8,shippingDays:2,image:"https://picsum.photos/id/1/800/520",description:"Mechanical RGB keyboard with hot-swappable switches.",stock:34,addedOn:"2026-01-22",sla:"gold",reviews:[{u:"nova_13",r:5,t:"Build quality is excellent."}]},
+{id:2,name:"Quantum Desk Lamp",price:74,category:"Home",vendor:"LumaCore",rating:4.6,shippingDays:1,image:"https://picsum.photos/id/96/800/520",description:"Adaptive desk lamp with ambient sync controls.",stock:41,addedOn:"2026-02-01",sla:"gold",reviews:[{u:"atlas_cart",r:4,t:"Very bright and compact."}]},
+{id:3,name:"Pulse Runner Pro",price:159,category:"Sports",vendor:"StrideVault",rating:4.7,shippingDays:2,image:"https://picsum.photos/id/21/800/520",description:"Performance running shoes for daily and race use.",stock:52,addedOn:"2026-01-28",sla:"silver",reviews:[]},
+{id:4,name:"Crystal Audio DAC",price:219,category:"Electronics",vendor:"AuralForge",rating:4.9,shippingDays:3,image:"https://picsum.photos/id/180/800/520",description:"Portable high-fidelity DAC with balanced output.",stock:19,addedOn:"2026-02-04",sla:"gold",reviews:[{u:"pixelfox",r:5,t:"Huge soundstage."}]},
+{id:5,name:"Deep Rest Blanket",price:95,category:"Home",vendor:"CalmHaven",rating:4.5,shippingDays:3,image:"https://picsum.photos/id/1060/800/520",description:"Cooling weighted blanket with removable cover.",stock:28,addedOn:"2026-01-18",sla:"bronze",reviews:[]},
+{id:6,name:"Orbit Messenger Bag",price:88,category:"Fashion",vendor:"NorthThread",rating:4.4,shippingDays:2,image:"https://picsum.photos/id/250/800/520",description:"Weatherproof messenger with tablet slot.",stock:26,addedOn:"2026-01-31",sla:"silver",reviews:[]},
+{id:7,name:"Hydra Smart Bottle",price:49,category:"Sports",vendor:"StrideVault",rating:4.3,shippingDays:1,image:"https://picsum.photos/id/292/800/520",description:"Insulated bottle with hydration reminders.",stock:67,addedOn:"2026-02-05",sla:"silver",reviews:[]},
+{id:8,name:"Velvet Roast Beans",price:24,category:"Food",vendor:"BeanCircuit",rating:4.9,shippingDays:1,image:"https://picsum.photos/id/431/800/520",description:"Single-origin medium roast coffee beans.",stock:120,addedOn:"2026-01-26",sla:"gold",reviews:[{u:"luna_ops",r:5,t:"Fresh and flavorful."}]},
+{id:9,name:"Advanced Web Commerce",price:39,category:"Books",vendor:"BytePress",rating:4.8,shippingDays:2,image:"https://picsum.photos/id/24/800/520",description:"Practical guide for storefront architecture.",stock:87,addedOn:"2026-01-14",sla:"bronze",reviews:[]},
+{id:10,name:"Photon Skin Kit",price:69,category:"Beauty",vendor:"PureBloom",rating:4.6,shippingDays:2,image:"https://picsum.photos/id/64/800/520",description:"Daily skincare cleanser, serum, and cream.",stock:58,addedOn:"2026-01-27",sla:"silver",reviews:[]}
+];
+const FEATURES=["Role-based auth (member/vendor/admin via PGP)","Admin category manager","Vendor console + listing creation","Profile editor + saved shipping info","Wallet + ledger + fair coinflip","Full cart/checkout totals with tax/shipping/discount","Notification center + support tickets","Responsive one-page SPA routing via modals","Lively simulated feed (clearly labeled)"];
+const FEED_USERS=["byte_hound","nova_13","luna_ops","gearhunter","pulse_zen","atlas_cart","neonbuyer","pixelfox"];
+const FEED_MSGS=["Just received my order, packaging was perfect.","Price drop alert on Electronics right now.","Anyone tried the new Aurora Notebook Pro?","Fast shipping this week from NexusGear.","Coupon SAVE10 worked at checkout.","Looking for recommendations in Home category.","Order status updated to shipped.","Adding another item to wishlist."];
+
+const LS={products:"snm_products",users:"snm_users",cart:"snm_cart",wish:"snm_wish",orders:"snm_orders",wallet:"snm_wallet",ledger:"snm_ledger",user:"snm_user",admin:"snm_admin_fp",bets:"snm_bets",feed:"snm_feed",recent:"snm_recent",notif:"snm_notif",tickets:"snm_tickets"};
+const state={
+  products:JSON.parse(localStorage.getItem(LS.products)||"null")||structuredClone(DEFAULT_PRODUCTS),
+  users:JSON.parse(localStorage.getItem(LS.users)||"{}"),
+  cart:JSON.parse(localStorage.getItem(LS.cart)||"[]"),
+  wish:JSON.parse(localStorage.getItem(LS.wish)||"[]"),
+  orders:JSON.parse(localStorage.getItem(LS.orders)||"[]"),
+  wallet:+(localStorage.getItem(LS.wallet)||850),
+  ledger:JSON.parse(localStorage.getItem(LS.ledger)||"[]"),
+  user:JSON.parse(localStorage.getItem(LS.user)||"null"),
+  adminFP:localStorage.getItem(LS.admin)||"",
+  bets:JSON.parse(localStorage.getItem(LS.bets)||"[]"),
+  feed:JSON.parse(localStorage.getItem(LS.feed)||"[]"),
+  recent:JSON.parse(localStorage.getItem(LS.recent)||"[]"),
+  notifications:JSON.parse(localStorage.getItem(LS.notif)||"[]"),
+  tickets:JSON.parse(localStorage.getItem(LS.tickets)||"[]"),
+  cat:"All",q:"",sort:"featured",minR:0,minP:null,maxP:null,shipF:"all",slaF:"all",page:1,perPage:6
+};
+
+const $=(id)=>document.getElementById(id),fmt=(n)=>new Intl.NumberFormat("en-US",{style:"currency",currency:"USD"}).format(n);
+const esc=(s)=>String(s).replace(/[&<>\"]/g,(m)=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m]));
+const escAttr=(s)=>String(s).replace(/'/g,"\\'");
+const cssSafe=(s)=>String(s).replace(/[^\w-]/g,"_");
+
+function save(){
+  localStorage.setItem(LS.products,JSON.stringify(state.products));
+  localStorage.setItem(LS.users,JSON.stringify(state.users));
+  localStorage.setItem(LS.cart,JSON.stringify(state.cart));
+  localStorage.setItem(LS.wish,JSON.stringify(state.wish));
+  localStorage.setItem(LS.orders,JSON.stringify(state.orders));
+  localStorage.setItem(LS.wallet,String(state.wallet));
+  localStorage.setItem(LS.ledger,JSON.stringify(state.ledger.slice(0,25)));
+  localStorage.setItem(LS.user,JSON.stringify(state.user));
+  localStorage.setItem(LS.admin,state.adminFP);
+  localStorage.setItem(LS.bets,JSON.stringify(state.bets.slice(0,15)));
+  localStorage.setItem(LS.feed,JSON.stringify(state.feed.slice(0,20)));
+  localStorage.setItem(LS.recent,JSON.stringify(state.recent.slice(0,8)));
+  localStorage.setItem(LS.notif,JSON.stringify(state.notifications.slice(0,30)));
+  localStorage.setItem(LS.tickets,JSON.stringify(state.tickets.slice(0,20)));
+}
+function toast(msg,ok=true){const t=$("toast");t.textContent=msg;t.style.display="block";t.style.background=ok?"#0d2f2a":"#3a1020";t.style.border=`1px solid ${ok?"#2de0b1":"#ff4d7a"}`;setTimeout(()=>t.style.display="none",2300)}
+function addNotification(type,text){state.notifications.unshift({type,text,time:new Date().toLocaleTimeString(),read:false});$("notifCount").textContent=state.notifications.filter(n=>!n.read).length;save();}
+
+function categories(){return ["All",...new Set(state.products.map(p=>p.category))]}
+function vendorStats(){const m={};state.products.forEach((p)=>{m[p.vendor]??={name:p.vendor,rt:0,c:0,p:0,s:0,sla:p.sla||"bronze"};const v=m[p.vendor];v.rt+=p.rating;v.c++;v.p++;v.s+=Math.floor(p.stock*p.rating*.8);if(["gold","silver","bronze"].indexOf(p.sla||"bronze")<["gold","silver","bronze"].indexOf(v.sla))v.sla=p.sla||"bronze";});return Object.values(m).map(v=>({...v,rating:(v.rt/v.c).toFixed(2)}))}
+function topVendor(){const vs=vendorStats().sort((a,b)=>b.s-a.s);return vs[0]?.name||"N/A"}
+function avgRating(){if(!state.products.length)return "0.00";return (state.products.reduce((s,p)=>s+p.rating,0)/state.products.length).toFixed(2)}
+function lowStock(){return state.products.filter(p=>p.stock<25).length}
+function openTickets(){return state.tickets.filter(t=>t.status!=="closed").length}
+
+function filteredProducts(){
+  return state.products.filter((p)=>{
+    const c=state.cat==="All"||p.category===state.cat;
+    const q=`${p.name} ${p.vendor} ${p.description}`.toLowerCase().includes(state.q);
+    const r=p.rating>=state.minR;
+    const min=state.minP==null||p.price>=state.minP;
+    const max=state.maxP==null||p.price<=state.maxP;
+    const sh=state.shipF==="all"||String(p.shippingDays)===state.shipF||(state.shipF==="3"&&p.shippingDays>=3);
+    const sla=state.slaF==="all"||p.sla===state.slaF;
+    return c&&q&&r&&min&&max&&sh&&sla;
+  }).sort((a,b)=>state.sort==="priceAsc"?a.price-b.price:state.sort==="priceDesc"?b.price-a.price:state.sort==="ratingDesc"?b.rating-a.rating:state.sort==="newest"?new Date(b.addedOn)-new Date(a.addedOn):b.rating*b.stock-a.rating*a.stock);
+}
+
+function cartTotals(){
+  const sub=state.cart.reduce((s,r)=>{const p=state.products.find(x=>x.id===r.id);return s+(p?.price||0)*r.qty},0);
+  const tax=+(sub*.08).toFixed(2);
+  const shipping=$("shippingMethod")?.value==="express"?12:0;
+  const discount=$("couponCode")?.value.trim().toUpperCase()==="SAVE10"?+(sub*.1).toFixed(2):0;
+  const grand=+(sub+tax+shipping-discount).toFixed(2);
+  return {sub,tax,shipping,discount,grand};
+}
+
+function fingerprint(text){let h=0;for(let i=0;i<text.length;i++)h=((h<<5)-h+text.charCodeAt(i))|0;return `PGP-${Math.abs(h).toString(16).toUpperCase().padStart(8,"0")}`}
+function vendorName(){if(state.user?.display?.includes("@"))return state.user.display.split("@")[0]||"Vendor";if(state.user?.role==="admin")return "NexusAdminStore";return state.user?.display||"Vendor"}
+function addLedger(type,amount){state.ledger.unshift({type,amount,date:new Date().toLocaleString()})}
+
+function renderCategories(){
+  const list=categories();
+  if(!list.includes(state.cat))state.cat="All";
+  $("categoryList").innerHTML=list.map((c)=>`<button class="cat-btn ${state.cat===c?"active":""}" data-c="${esc(c)}">${esc(c)}</button>`).join("");
+  document.querySelectorAll("#categoryList .cat-btn").forEach((b)=>b.onclick=()=>{state.cat=b.dataset.c;state.page=1;render()});
+
+  const isAdmin=state.user?.role==="admin";
+  $("adminCategorySection").style.display=isAdmin?"block":"none";
+  if(isAdmin){
+    $("adminCategoryList").innerHTML=list.filter(c=>c!=="All").map((c)=>`<div class="list-item"><div class="row"><input id="rename_${cssSafe(c)}" value="${esc(c)}"/><button class="btn secondary" onclick="renameCategory('${escAttr(c)}')">SAVE</button></div><div style="height:6px"></div><button class="btn danger" style="width:100%" onclick="removeCategory('${escAttr(c)}')">REMOVE CATEGORY</button></div>`).join("");
+  }
+}
+
+function renderGrid(){
+  const all=filteredProducts();const pages=Math.max(1,Math.ceil(all.length/state.perPage));state.page=Math.min(state.page,pages);
+  const rows=all.slice((state.page-1)*state.perPage,state.page*state.perPage);
+  $("productGrid").innerHTML=rows.map((p)=>`<article class="card"><img src="${p.image}" alt="${esc(p.name)}" loading="lazy"/><div class="card-body"><h3 class="name">${esc(p.name)}</h3><p class="muted">${esc(p.category)} • ${esc(p.vendor)} • ${p.sla.toUpperCase()} SLA</p><p class="muted">★ ${p.rating} • ${p.shippingDays}-day shipping • ${p.stock} in stock</p><p class="price">${fmt(p.price)}</p><div class="row"><button class="btn secondary" onclick="openProduct(${p.id})">DETAILS</button><button class="btn" onclick="addToCart(${p.id})">ADD TO CART</button></div><div style="height:6px"></div><button class="btn secondary" style="width:100%" onclick="toggleWish(${p.id})">${state.wish.includes(p.id)?"REMOVE FROM":"ADD TO"} WISHLIST</button></div></article>`).join("");
+  $("pageInfo").textContent=`Page ${state.page} of ${pages}`;$("prevPage").disabled=state.page<=1;$("nextPage").disabled=state.page>=pages;
+}
+
+function renderCart(){
+  const rows=state.cart.map((r)=>{const p=state.products.find(x=>x.id===r.id);return {...r,name:p?.name||"Unknown",price:p?.price||0}});
+  $("cartList").innerHTML=rows.length?rows.map((r)=>`<div class="list-item"><div>${esc(r.name)}</div><div class="row"><span>${r.qty} × ${fmt(r.price)}</span><span class="money">${fmt(r.qty*r.price)}</span></div><div class="row" style="margin-top:5px"><button class="btn secondary" onclick="changeQty(${r.id},-1)">-</button><button class="btn secondary" onclick="changeQty(${r.id},1)">+</button><button class="btn secondary" onclick="removeFromCart(${r.id})">REMOVE</button></div></div>`).join(""):`<p class="muted">Cart is empty.</p>`;
+  const t=cartTotals();
+  $("cartSubtotal").textContent=fmt(t.sub);$("cartTax").textContent=fmt(t.tax);$("cartShipping").textContent=fmt(t.shipping);$("cartDiscount").textContent=`-${fmt(t.discount)}`;$("cartGrand").textContent=fmt(t.grand);
+  $("cartCount").textContent=state.cart.reduce((s,r)=>s+r.qty,0);
+}
+
+function renderRecentViewed(){
+  $("recentViewed").innerHTML=state.recent.length?state.recent.slice(0,5).map((id)=>{const p=state.products.find(x=>x.id===id);return p?`<div class="list-item"><div>${esc(p.name)}</div><div class="muted">${fmt(p.price)} • ${esc(p.vendor)}</div></div>`:""}).join(""):`<p class="muted">No recent items.</p>`;
+}
+
+function renderSide(){
+  $("orderList").innerHTML=state.orders.length?state.orders.slice(0,4).map((o)=>`<div class="list-item"><div>#${o.id}</div><div class="muted">${o.date}</div><div class="row"><span>${o.status}</span><span class="money">${fmt(o.total)}</span></div></div>`).join(""):`<p class="muted">No orders yet.</p>`;
+  $("coinflipHistory").innerHTML=state.bets.length?state.bets.slice(0,4).map((b)=>`<div class="list-item"><div class="row"><span>${b.pick} vs ${b.result}</span><span>${b.outcome}</span></div><div class="row"><span>${b.date}</span><span class="money">${fmt(b.amount)}</span></div></div>`).join(""):`<p class="muted">No bets yet.</p>`;
+  $("chatFeed").innerHTML=state.feed.slice(0,7).map((f)=>`<div class="list-item"><div class="row"><span>${esc(f.user)}</span><span class="muted">${f.time}</span></div><div>${esc(f.text)}</div></div>`).join("")||`<p class="muted">Feed warming up...</p>`;
+  $("walletLedger").innerHTML=state.ledger.length?`<div class="section"><h4 class="title">WALLET LEDGER</h4>${state.ledger.slice(0,4).map((l)=>`<div class="list-item"><div class="row"><span>${l.type}</span><span class="money">${fmt(l.amount)}</span></div><div class="muted">${l.date}</div></div>`).join("")}</div>`:"";
+
+  const inUser=!!state.user;
+  $("accountBlock").innerHTML=inUser?`<p>Signed in as <strong>${esc(state.user.display)} (${state.user.role.toUpperCase()})</strong></p>`:`<p>Browsing as guest. Sign in to checkout.</p>`;
+  $("authToggleBtn").textContent=inUser?"Logout":"Sign In";
+  $("walletBalance").textContent=fmt(state.wallet);$("wishCount").textContent=state.wish.length;
+
+  const vs=vendorStats();
+  $("statProducts").textContent=state.products.length;$("statVendors").textContent=vs.length;$("statOrders").textContent=state.orders.length;$("statUsers").textContent=Object.keys(state.users).length+(state.adminFP?1:0);
+  $("topVendor").textContent=topVendor();$("avgRating").textContent=avgRating();$("lowStockCount").textContent=lowStock();$("openTicketsCount").textContent=openTickets();
+
+  const showVendor=state.user&&["vendor","admin"].includes(state.user.role);$("vendorConsole").style.display=showVendor?"block":"none";
+  if(showVendor){const vn=vendorName();const sales=state.orders.reduce((sum,o)=>sum+o.items.reduce((s,i)=>{const p=state.products.find(x=>x.id===i.id);return p&&p.vendor===vn?s+p.price*i.qty:s},0),0);const listings=state.products.filter((p)=>p.vendor===vn).length;$("vendorStats").innerHTML=`<div class="section"><p class="muted">Vendor: ${esc(vn)}</p><p class="muted">Listings: ${listings}</p><p class="muted">Sales volume: <span class="money">${fmt(sales)}</span></p></div>`;}
+
+  $("notifCount").textContent=state.notifications.filter(n=>!n.read).length;
+}
+
+function render(){
+  renderCategories();renderGrid();renderCart();renderRecentViewed();renderSide();save();
+  const t=cartTotals();const chk=+(t.sub+t.tax+t.shipping-t.discount).toFixed(2);if(chk!==t.grand)console.error("Accounting mismatch",t,chk);
+}
+
+function addToCart(id){const p=state.products.find(x=>x.id===id);if(!p)return;const r=state.cart.find(x=>x.id===id);r?r.qty++:state.cart.push({id,qty:1});addNotification("cart",`${p.name} added to cart.`);render();toast(`${p.name} added to cart.`)}
+function removeFromCart(id){state.cart=state.cart.filter(x=>x.id!==id);render();toast("Item removed.")}
+function changeQty(id,d){const r=state.cart.find(x=>x.id===id);if(!r)return;r.qty+=d;if(r.qty<=0)state.cart=state.cart.filter(x=>x.id!==id);render()}
+function toggleWish(id){state.wish=state.wish.includes(id)?state.wish.filter(x=>x!==id):[...state.wish,id];render();toast("Wishlist updated.")}
+
+function checkout(){
+  if(!state.user)return toast("Sign in required before checkout.",false);
+  if(!state.cart.length)return toast("Your cart is empty.",false);
+  if(!$("recipientName").value.trim()||!$("shippingAddress").value.trim())return toast("Shipping info required.",false);
+  const t=cartTotals();if(t.grand>state.wallet)return toast("Insufficient balance.",false);
+  state.wallet=+(state.wallet-t.grand).toFixed(2);addLedger("Checkout",-t.grand);
+  const id=`SN-${Date.now().toString().slice(-8)}`;
+  state.orders.unshift({id,date:new Date().toLocaleString(),status:"Processing",recipient:$("recipientName").value.trim(),address:$("shippingAddress").value.trim(),payment:$("paymentMethod").value,shippingMethod:$("shippingMethod").value,items:state.cart.map(x=>({...x})),subtotal:t.sub,tax:t.tax,shipping:t.shipping,discount:t.discount,total:t.grand});
+  addNotification("order",`Order ${id} placed successfully.`);
+  state.cart=[];$("recipientName").value="";$("shippingAddress").value="";$("couponCode").value="";$("shippingMethod").value="standard";
+  render();toast(`Order ${id} placed.`);
+}
+
+function openProduct(id){
+  const p=state.products.find(x=>x.id===id);if(!p)return;
+  state.recent=[id,...state.recent.filter(x=>x!==id)].slice(0,8);
+  $("productModalBody").innerHTML=`<div class="detail-grid"><img src="${p.image}" alt="${esc(p.name)}" style="width:100%;min-height:230px;object-fit:cover;border-radius:8px"/><div><h2 class="title" style="font-size:24px">${esc(p.name)}</h2><p class="muted">Vendor: ${esc(p.vendor)} • ${p.sla.toUpperCase()} SLA</p><p class="muted">Category: ${esc(p.category)}</p><p class="muted">Rating: ★ ${p.rating}</p><p class="muted">Shipping ETA: ${p.shippingDays} day(s)</p><p class="muted">Stock: ${p.stock}</p><p style="margin:9px 0">${esc(p.description)}</p><h3 class="price">${fmt(p.price)}</h3><div class="row"><button class="btn" onclick="addToCart(${p.id});closeModal('productModal')">ADD TO CART</button><button class="btn secondary" onclick="toggleWish(${p.id})">WISHLIST</button></div><div class="section"><h4 class="title">REVIEWS</h4>${(p.reviews||[]).map(r=>`<div class='list-item'><div class='row'><span>${esc(r.u)}</span><span>★ ${r.r}</span></div><div>${esc(r.t)}</div></div>`).join("")||"<p class='muted'>No reviews yet.</p>"}<div style='height:6px'></div><textarea id='newReviewText' rows='2' placeholder='Write a review'></textarea><div style='height:6px'></div><div class='row'><select id='newReviewRating' style='max-width:140px'><option value='5'>5 Stars</option><option value='4'>4 Stars</option><option value='3'>3 Stars</option></select><button class='btn secondary' onclick='submitReview(${p.id})'>SUBMIT REVIEW</button></div></div></div></div>`;
+  openModal("productModal");renderRecentViewed();save();
+}
+
+function submitReview(id){
+  const p=state.products.find(x=>x.id===id);if(!p)return;
+  const txt=$("newReviewText").value.trim();const rating=+$("newReviewRating").value;
+  if(!txt)return toast("Review text required.",false);
+  const user=(state.user?.display)||"guest_user";
+  p.reviews=p.reviews||[];p.reviews.unshift({u:user,r:rating,t:txt});
+  p.rating=+(p.reviews.reduce((s,r)=>s+r.r,0)/p.reviews.length).toFixed(1);
+  openProduct(id);render();toast("Review submitted.");
+}
+
+function registerEmail(){const e=$("authEmail").value.trim().toLowerCase(),p=$("authPassword").value,r=$("authRole").value;if(!e||!p)return toast("Email and password required.",false);if(state.users[e])return toast("Account already exists.",false);state.users[e]={email:e,pass:p,role:r,profile:{name:"",phone:"",address:""}};save();toast("Account created.")}
+function loginEmail(){const e=$("authEmail").value.trim().toLowerCase(),p=$("authPassword").value,a=state.users[e];if(!a||a.pass!==p)return toast("Invalid credentials.",false);state.user={role:a.role,display:e,profile:a.profile||{name:"",phone:"",address:""}};closeModal("authModal");render();toast("Logged in.")}
+function loginWithPGP(){const key=$("pgpKeyInput").value.trim();if(!key.includes("BEGIN PGP PUBLIC KEY BLOCK")||!key.includes("END PGP PUBLIC KEY BLOCK"))return toast("Invalid PGP key format.",false);const fp=fingerprint(key);if(!state.adminFP)state.adminFP=fp;const role=state.adminFP===fp?"admin":"member";state.user={role,display:fp,profile:state.user?.profile||{name:"",phone:"",address:""}};closeModal("authModal");render();toast(role==="admin"?`Admin recognized (${fp}).`:`PGP login success (${fp}).`)}
+function toggleAuth(){if(!state.user)return openModal("authModal");if(state.user.display.includes("@")&&state.users[state.user.display])state.users[state.user.display].profile=state.user.profile||{};state.user=null;render();toast("Logged out.")}
+
+function renderProfile(){
+  if(!state.user){$("profileModalBody").innerHTML='<p class="muted">Please sign in first.</p>';return;}
+  const p=state.user.profile||{name:"",phone:"",address:""};
+  $("profileModalBody").innerHTML=`<div class="list-item"><p><strong>${esc(state.user.display)}</strong></p><p class="muted">Role: ${state.user.role}</p></div><div class="section"><h4 class="title">EDIT PROFILE</h4><input id="profileName" value="${esc(p.name||"")}" placeholder="Full name"/><div style="height:7px"></div><input id="profilePhone" value="${esc(p.phone||"")}" placeholder="Phone"/><div style="height:7px"></div><textarea id="profileAddress" rows="3" placeholder="Default shipping address">${esc(p.address||"")}</textarea><div style="height:7px"></div><button class="btn" id="saveProfileBtn">SAVE PROFILE</button></div>`;
+  $("saveProfileBtn").onclick=()=>{state.user.profile={name:$("profileName").value.trim(),phone:$("profilePhone").value.trim(),address:$("profileAddress").value.trim()};if(state.user.display.includes("@")&&state.users[state.user.display])state.users[state.user.display].profile=state.user.profile;save();toast("Profile saved.");};
+}
+
+function renameCategory(oldName){if(state.user?.role!=="admin")return toast("Admin required.",false);const next=$("rename_"+cssSafe(oldName))?.value.trim();if(!next||next==="All")return toast("Invalid name.",false);if(categories().includes(next)&&next!==oldName)return toast("Category exists.",false);state.products=state.products.map((p)=>p.category===oldName?{...p,category:next}:p);if(state.cat===oldName)state.cat=next;render();toast(`Renamed to ${next}.`)}
+function removeCategory(cat){if(state.user?.role!=="admin")return toast("Admin required.",false);state.products=state.products.map((p)=>p.category===cat?{...p,category:"Uncategorized"}:p);if(state.cat===cat)state.cat="All";render();toast(`Category ${cat} retired.`)}
+function addCategory(){if(state.user?.role!=="admin")return toast("Admin required.",false);const n=$("newCategoryName").value.trim();if(!n||n==="All")return toast("Invalid category.",false);if(categories().includes(n))return toast("Category exists.",false);const id=Math.max(...state.products.map((p)=>p.id))+1;state.products.push({id,name:`${n} Starter Item`,price:59,category:n,vendor:vendorName(),rating:4.3,shippingDays:2,image:"https://picsum.photos/seed/newcat/800/520",description:`Admin-created starter listing for ${n}.`,stock:20,addedOn:new Date().toISOString().slice(0,10),sla:"bronze",reviews:[]});$("newCategoryName").value="";render();toast(`Category ${n} created.`)}
+
+function addVendorProduct(){if(!state.user||!["vendor","admin"].includes(state.user.role))return toast("Vendor access required.",false);const n=$("vendorProductName").value.trim(),p=+$("vendorProductPrice").value,c=$("vendorProductCategory").value.trim(),s=+$("vendorProductStock").value;if(!n||!c||!p||!s)return toast("Complete all vendor fields.",false);const id=Math.max(...state.products.map((x)=>x.id))+1;state.products.unshift({id,name:n,price:p,category:c,vendor:vendorName(),rating:4.5,shippingDays:2,image:`https://picsum.photos/seed/vendor${id}/800/520`,description:`Vendor listing by ${vendorName()}.`,stock:s,addedOn:new Date().toISOString().slice(0,10),sla:"silver",reviews:[]});$("vendorProductName").value=$("vendorProductPrice").value=$("vendorProductCategory").value=$("vendorProductStock").value="";addNotification("vendor",`Vendor listing ${n} created.`);render();toast("Listing added successfully.")}
+
+function coinflip(){const amount=+$("coinflipAmount").value,pick=$("coinflipPick").value;if(!state.user)return toast("Sign in required to bet.",false);if(!Number.isFinite(amount)||amount<=0)return toast("Enter valid amount.",false);if(amount>state.wallet)return toast("Bet exceeds balance.",false);state.wallet=+(state.wallet-amount).toFixed(2);const result=Math.random()<.5?"Heads":"Tails",win=result===pick;if(win)state.wallet=+(state.wallet+amount*2).toFixed(2);addLedger(`Coinflip ${win?"Win":"Loss"}`,win?amount:-amount);state.bets.unshift({amount,pick,result,outcome:win?"WIN":"LOSS",date:new Date().toLocaleTimeString()});const coin=$("coinVisual");coin.textContent="...";coin.classList.remove("flipping");void coin.offsetWidth;coin.classList.add("flipping");$("coinResultText").textContent="Flipping...";openModal("coinflipModal");setTimeout(()=>{coin.textContent=result;$("coinResultText").textContent=`You picked ${pick}. Coin landed ${result}. ${win?"You won!":"You lost."}`;render();},1750)}
+
+function fillVendorsModal(){$("vendorsModalBody").innerHTML=vendorStats().map((v)=>`<div class="list-item"><div class="row"><strong>${esc(v.name)}</strong><span>★ ${v.rating} • ${v.sla.toUpperCase()} SLA</span></div><div class="muted">${v.p} products • ${v.s.toLocaleString()} modeled sales</div></div>`).join("")}
+function fillFeaturesModal(){$("featuresModalBody").innerHTML=FEATURES.map((f)=>`<li class="list-item">${esc(f)}</li>`).join("")}
+function fillLeaderboardModal(){$("leaderboardModalBody").innerHTML=vendorStats().sort((a,b)=>b.s-a.s).slice(0,10).map((v,i)=>`<div class="list-item"><div class="row"><span>#${i+1} ${esc(v.name)}</span><span>★ ${v.rating}</span></div><div class="muted">${v.p} products • ${v.s.toLocaleString()} modeled sales</div></div>`).join("")}
+
+function renderNotificationsModal(){
+  $("notificationsModalBody").innerHTML=state.notifications.length?state.notifications.map((n)=>`<div class="list-item"><div class="row"><span>${esc(n.type.toUpperCase())}</span><span class="muted">${n.time}</span></div><div>${esc(n.text)}</div></div>`).join(""):`<p class="muted">No notifications yet.</p>`;
+  state.notifications=state.notifications.map(n=>({...n,read:true}));$("notifCount").textContent="0";save();
+}
+
+function renderSupportModal(){
+  $("supportModalBody").innerHTML=`<div class="section"><h4 class="title">OPEN TICKET</h4><input id="ticketSubject" placeholder="Subject"/><div style="height:7px"></div><textarea id="ticketMessage" rows="3" placeholder="Describe your issue"></textarea><div style="height:7px"></div><button class="btn secondary" id="openTicketBtn">OPEN TICKET</button></div><div class="section"><h4 class="title">YOUR TICKETS</h4>${state.tickets.length?state.tickets.slice(0,8).map(t=>`<div class='list-item'><div class='row'><strong>${esc(t.id)}</strong><span>${esc(t.status)}</span></div><div>${esc(t.subject)}</div><div class='muted'>${t.date}</div></div>`).join(""):"<p class='muted'>No tickets yet.</p>"}</div>`;
+  $("openTicketBtn").onclick=()=>{const subject=$("ticketSubject").value.trim(),message=$("ticketMessage").value.trim();if(!subject||!message)return toast("Ticket subject/message required.",false);const id=`TK-${Date.now().toString().slice(-6)}`;state.tickets.unshift({id,subject,message,status:"open",date:new Date().toLocaleString()});addNotification("support",`Ticket ${id} opened.`);renderSupportModal();render();toast(`Ticket ${id} opened.`);};
+}
+
+function pushFeed(){state.feed.unshift({user:FEED_USERS[Math.floor(Math.random()*FEED_USERS.length)],text:FEED_MSGS[Math.floor(Math.random()*FEED_MSGS.length)],time:new Date().toLocaleTimeString()});state.feed=state.feed.slice(0,20);renderSide();save()}
+
+function openModal(id){$(id).style.display="flex"}
+function closeModal(id){$(id).style.display="none"}
+
+window.openProduct=openProduct;window.addToCart=addToCart;window.removeFromCart=removeFromCart;window.changeQty=changeQty;window.toggleWish=toggleWish;window.renameCategory=renameCategory;window.removeCategory=removeCategory;window.closeModal=closeModal;window.submitReview=submitReview;
+
+$("searchInput").oninput=(e)=>{state.q=e.target.value.toLowerCase().trim();state.page=1;render();};
+$("sortSelect").onchange=(e)=>{state.sort=e.target.value;render();};
+$("minRating").onchange=(e)=>{state.minR=+e.target.value;state.page=1;render();};
+$("shippingFilter").onchange=(e)=>{state.shipF=e.target.value;state.page=1;render();};
+$("slaFilter").onchange=(e)=>{state.slaF=e.target.value;state.page=1;render();};
+$("minPrice").oninput=(e)=>{state.minP=e.target.value?+e.target.value:null;state.page=1;render();};
+$("maxPrice").oninput=(e)=>{state.maxP=e.target.value?+e.target.value:null;state.page=1;render();};
+$("couponCode").oninput=()=>renderCart();
+$("shippingMethod").onchange=()=>renderCart();
+
+$("clearFilters").onclick=()=>{state.cat="All";state.q="";state.sort="featured";state.minR=0;state.minP=null;state.maxP=null;state.shipF="all";state.slaF="all";state.page=1;$("searchInput").value="";$("sortSelect").value="featured";$("minRating").value="0";$("shippingFilter").value="all";$("slaFilter").value="all";$("minPrice").value="";$("maxPrice").value="";render();};
+$("prevPage").onclick=()=>{if(state.page>1){state.page--;render();}};
+$("nextPage").onclick=()=>{const pages=Math.ceil(filteredProducts().length/state.perPage);if(state.page<pages){state.page++;render();}};
+
+$("depositBtn").onclick=()=>{const a=+$("depositAmount").value;if(!Number.isFinite(a)||a<=0)return toast("Enter valid amount.",false);state.wallet=+(state.wallet+a).toFixed(2);addLedger("Deposit",a);addNotification("wallet",`${fmt(a)} deposited.`);render();toast(`${fmt(a)} deposited.`);};
+$("withdrawBtn").onclick=()=>{const a=+$("withdrawAmount").value;if(!Number.isFinite(a)||a<=0)return toast("Enter valid amount.",false);if(a>state.wallet)return toast("Insufficient balance.",false);state.wallet=+(state.wallet-a).toFixed(2);addLedger("Withdraw",-a);addNotification("wallet",`${fmt(a)} withdrawn.`);render();toast(`${fmt(a)} withdrawn.`);};
+
+$("checkoutBtn").onclick=checkout;
+$("coinflipBtn").onclick=coinflip;
+$("registerBtn").onclick=registerEmail;
+$("loginBtn").onclick=loginEmail;
+$("pgpLoginBtn").onclick=loginWithPGP;
+$("authToggleBtn").onclick=()=>{if(!state.user)return openModal("authModal");if(state.user.display.includes("@")&&state.users[state.user.display])state.users[state.user.display].profile=state.user.profile||{};state.user=null;render();toast("Logged out.");};
+$("addCategoryBtn").onclick=addCategory;
+$("addVendorProductBtn").onclick=addVendorProduct;
+
+$("wishBtn").onclick=()=>{if(!state.wish.length)return toast("Wishlist empty.",false);const names=state.wish.map((id)=>state.products.find((p)=>p.id===id)?.name).filter(Boolean);toast(`Wishlist: ${names.slice(0,3).join(", ")}${names.length>3?"...":""}`);};
+$("cartBtn").onclick=()=>document.querySelector("aside.right").scrollIntoView({behavior:"smooth"});
+$("notifBtn").onclick=()=>{renderNotificationsModal();openModal("notificationsModal");};
+
+// Keyboard shortcut
+window.addEventListener("keydown",(e)=>{if(e.key==="/"&&!e.ctrlKey&&!e.metaKey){e.preventDefault();$("searchInput").focus();}});
+
+document.querySelectorAll("#mainNav button").forEach((btn)=>{btn.onclick=()=>{document.querySelectorAll("#mainNav button").forEach((b)=>b.classList.remove("active"));btn.classList.add("active");const a=btn.dataset.action;if(btn.dataset.view==="home")window.scrollTo({top:0,behavior:"smooth"});if(a==="categories")$("categoryPane").scrollIntoView({behavior:"smooth"});if(a==="vendors"){fillVendorsModal();openModal("vendorsModal");}if(a==="features"){fillFeaturesModal();openModal("featuresModal");}if(a==="profile"){renderProfile();openModal("profileModal");}if(a==="leaderboard"){fillLeaderboardModal();openModal("leaderboardModal");}if(a==="support"){renderSupportModal();openModal("supportModal");}if(a==="auth")openModal("authModal");};});
+
+["productModal","vendorsModal","featuresModal","profileModal","leaderboardModal","authModal","coinflipModal","supportModal","notificationsModal"].forEach((id)=>{$(id).addEventListener("click",(e)=>{if(e.target.id===id)closeModal(id);});});
+
+if(!state.feed.length){for(let i=0;i<6;i++)pushFeed();}
+setInterval(pushFeed,6000);
+render();
+</script>
+</body>
+</html>
