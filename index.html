@@ -3,34 +3,32 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Synthetic Nexus Market - production-ready marketplace demo" />
   <title>Synthetic Nexus Market</title>
   <style>
     :root {
-      --bg: #050009;
-      --bg-soft: #12041f;
-      --panel: rgba(20, 8, 36, 0.95);
-      --panel-2: rgba(24, 10, 44, 0.95);
+      --bg: #040008;
+      --bg-soft: #10031b;
+      --panel: rgba(16, 6, 30, 0.95);
+      --panel-2: rgba(22, 9, 38, 0.95);
       --line: #ff00aa66;
-      --text: #f3edff;
-      --muted: #af93ca;
+      --text: #f2ebff;
+      --muted: #a78abf;
       --pink: #ff00aa;
-      --red: #ff245d;
+      --red: #ff1954;
       --cyan: #00f5ff;
-      --green: #40efb5;
-      --warn: #ffc45b;
-      --danger: #ff6699;
-      --shadow: 0 0 24px rgba(255, 0, 170, 0.3);
+      --green: #35f0ad;
+      --warn: #ffc35a;
+      --danger: #ff4d82;
+      --shadow: 0 0 24px rgba(255, 0, 170, 0.35);
     }
 
     * { box-sizing: border-box; }
-
     body {
       margin: 0;
-      min-height: 100vh;
-      color: var(--text);
       font-family: "Courier New", monospace;
+      color: var(--text);
       background: var(--bg);
+      min-height: 100vh;
       overflow-x: hidden;
     }
 
@@ -38,48 +36,49 @@
       content: "";
       position: fixed;
       inset: 0;
-      z-index: 0;
       pointer-events: none;
+      z-index: 0;
       background-image:
-        linear-gradient(rgba(255, 0, 128, 0.04) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(0, 245, 255, 0.03) 1px, transparent 1px);
+        linear-gradient(rgba(255, 0, 128, 0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 245, 255, 0.035) 1px, transparent 1px);
       background-size: 40px 40px;
-      opacity: 0.35;
+      opacity: 0.32;
     }
 
-    @keyframes glow {
-      0%, 100% { box-shadow: 0 0 0 rgba(255, 0, 170, 0); }
-      50% { box-shadow: 0 0 16px rgba(255, 0, 170, 0.2); }
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 rgba(255, 0, 170, 0.0); }
+      50% { box-shadow: 0 0 16px rgba(255, 0, 170, 0.24); }
     }
 
-    @keyframes pulseDot {
-      0%, 100% { opacity: 0.4; }
+    @keyframes floatUp {
+      0% { opacity: 0; transform: translateY(8px); }
+      100% { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes blinkDot {
+      0%, 100% { opacity: .3; }
       50% { opacity: 1; }
-    }
-
-    .app {
-      position: relative;
-      z-index: 1;
     }
 
     header {
       position: sticky;
       top: 0;
-      z-index: 50;
+      z-index: 30;
       display: grid;
-      grid-template-columns: 220px 1fr 220px;
-      gap: 12px;
+      grid-template-columns: 220px 1fr 230px;
       align-items: center;
-      padding: 14px 18px;
+      gap: 10px;
+      padding: 14px 20px;
+      background: linear-gradient(180deg, #090013, #090013f0);
       border-bottom: 1px solid var(--pink);
-      background: linear-gradient(180deg, #090013, #090013f4);
       box-shadow: var(--shadow);
     }
 
     .brand {
       color: var(--red);
       font-weight: 700;
-      text-shadow: 0 0 12px var(--red);
+      letter-spacing: 0.7px;
+      text-shadow: 0 0 10px var(--red);
       white-space: nowrap;
     }
 
@@ -88,6 +87,9 @@
       justify-content: center;
       flex-wrap: wrap;
       gap: 18px;
+      align-items: center;
+      gap: 22px;
+      flex-wrap: wrap;
     }
 
     .top-nav button {
@@ -97,6 +99,7 @@
       cursor: pointer;
       font-family: inherit;
       font-size: 14px;
+      padding: 2px 0;
     }
 
     .top-nav button.active,
@@ -108,6 +111,10 @@
     .header-right {
       display: flex;
       justify-content: flex-end;
+    .head-right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
       gap: 8px;
     }
 
@@ -126,6 +133,21 @@
       margin: 14px auto 20px;
       display: grid;
       grid-template-columns: 280px minmax(760px, 1fr) 340px;
+      background: #1b082a;
+      border-radius: 7px;
+      padding: 7px 10px;
+      font-size: 13px;
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    .layout {
+      position: relative;
+      z-index: 1;
+      width: min(1620px, calc(100% - 24px));
+      margin: 14px auto 20px;
+      display: grid;
+      grid-template-columns: 270px minmax(760px, 1fr) 320px;
       gap: 14px;
     }
 
@@ -134,6 +156,7 @@
       border: 1px solid var(--line);
       border-radius: 10px;
       box-shadow: var(--shadow);
+      animation: floatUp .3s ease;
     }
 
     aside.left,
@@ -143,6 +166,10 @@
       max-height: calc(100vh - 95px);
       overflow: auto;
       padding: 14px;
+      padding: 14px;
+      position: sticky;
+      top: 82px;
+      height: fit-content;
     }
 
     .title {
@@ -161,6 +188,19 @@
     .muted { color: var(--muted); font-size: 13px; }
     .money { color: var(--green); }
 
+      text-shadow: 0 0 8px var(--pink);
+      font-size: 15px;
+    }
+
+    .muted { color: var(--muted); font-size: 13px; }
+    .money { color: var(--green); }
+
+    .section {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #36124f;
+    }
+
     input, select, textarea, button { font-family: inherit; }
 
     input, select, textarea {
@@ -170,6 +210,11 @@
       background: var(--bg-soft);
       color: var(--text);
       padding: 9px 10px;
+      background: var(--bg-soft);
+      color: var(--text);
+      border-radius: 7px;
+      padding: 9px 10px;
+      outline: none;
     }
 
     textarea { resize: vertical; }
@@ -180,12 +225,17 @@
       background: linear-gradient(180deg, #ff1c5a, #a10041);
       color: #fff;
       padding: 8px 10px;
+      background: linear-gradient(180deg, #ff1453, #a70042);
+      color: #fff;
+      padding: 8px 10px;
+      border-radius: 7px;
       cursor: pointer;
       font-weight: 700;
     }
 
     .btn.secondary {
       background: #230d35;
+      background: #220c35;
       border-color: var(--cyan);
     }
 
@@ -199,6 +249,13 @@
       background: #3a1222;
       border-color: var(--danger);
       color: #ffc1d3;
+      color: #ffd794;
+    }
+
+    .btn.danger {
+      background: #3b1022;
+      border-color: var(--danger);
+      color: #ffacc6;
     }
 
     .cat-btn {
@@ -211,6 +268,12 @@
       cursor: pointer;
       padding: 8px 9px;
       margin-bottom: 6px;
+      background: transparent;
+      color: var(--text);
+      border-radius: 6px;
+      padding: 9px;
+      margin-bottom: 6px;
+      cursor: pointer;
     }
 
     .cat-btn:hover,
@@ -227,6 +290,14 @@
       padding: 14px;
       display: grid;
       grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      background: #2a0b3b;
+      border-color: var(--pink);
+    }
+
+    .controls {
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr 1fr;
       gap: 9px;
       align-items: center;
     }
@@ -237,6 +308,9 @@
       color: var(--red);
       text-shadow: 0 0 14px var(--red);
       font-size: 42px;
+      font-size: 46px;
+      text-shadow: 0 0 14px var(--red);
+      letter-spacing: .9px;
     }
 
     .live-dot {
@@ -247,6 +321,9 @@
       margin-right: 8px;
       background: var(--green);
       animation: pulseDot 1s infinite;
+      background: var(--green);
+      margin-right: 8px;
+      animation: blinkDot 1s infinite;
     }
 
     .grid {
@@ -276,6 +353,14 @@
 
     .name {
       margin: 0 0 6px;
+      animation: pulseGlow 3s ease-in-out infinite;
+    }
+
+    .card img { width: 100%; height: 160px; object-fit: cover; display: block; }
+    .cbody { padding: 10px; }
+
+    .name {
+      margin: 0 0 7px;
       color: var(--cyan);
       text-shadow: 0 0 7px var(--cyan);
       font-size: 17px;
@@ -301,6 +386,9 @@
       padding: 6px 10px;
       font-size: 12px;
     }
+    .price { margin: 7px 0; color: var(--green); font-size: 18px; }
+
+    .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
 
     .pagination {
       padding: 0 14px 16px;
@@ -324,6 +412,18 @@
       padding: 1px 7px;
       display: inline-block;
       margin-bottom: 6px;
+    .pill {
+      border: 1px solid #562283;
+      background: #18062a;
+      border-radius: 999px;
+      padding: 6px 11px;
+      font-size: 13px;
+    }
+
+    .list-item {
+      border-bottom: 1px solid #34124d;
+      padding: 9px 0;
+      font-size: 13px;
     }
 
     .modal {
@@ -358,43 +458,47 @@
       border: 3px solid #ffd27f;
       display: grid;
       place-items: center;
-      font-size: 22px;
+      font-size: 24px;
       font-weight: 700;
-      background: radial-gradient(circle at 30% 30%, #ffd27f, #af700d);
+      color: #fff3d8;
+      background: radial-gradient(circle at 30% 30%, #ffd27f, #b57711 70%);
+      transform-style: preserve-3d;
     }
 
-    @keyframes flip {
+    .coin.flipping {
+      animation: flipCoin 1.7s cubic-bezier(.2,.8,.2,1);
+    }
+
+    @keyframes flipCoin {
       0% { transform: rotateX(0) rotateY(0); }
       100% { transform: rotateX(1980deg) rotateY(1980deg); }
     }
 
-    .coin.flipping { animation: flip 1.7s cubic-bezier(.2,.8,.2,1); }
-
-    .toast {
-      position: fixed;
-      right: 12px;
-      bottom: 12px;
-      z-index: 100;
-      display: none;
-      border-radius: 7px;
-      padding: 8px 12px;
-      color: #fff;
+    .feed-tag {
+      color: #9cdcff;
+      font-size: 11px;
+      border: 1px solid #2f6ca0;
+      border-radius: 999px;
+      padding: 1px 7px;
+      display: inline-block;
+      margin-bottom: 6px;
     }
 
-    @media (max-width: 1400px) {
-      .layout { grid-template-columns: 270px 1fr; }
+    @media (max-width: 1320px) {
+      .layout { grid-template-columns: 250px 1fr; }
+      aside.right { grid-column: span 2; position: static; }
       .controls { grid-template-columns: 1fr 1fr; }
-      aside.right { position: static; grid-column: span 2; max-height: none; }
+      header { grid-template-columns: 180px 1fr 180px; }
     }
 
-    @media (max-width: 980px) {
+    @media (max-width: 960px) {
       header { grid-template-columns: 1fr; justify-items: center; }
-      .header-right { justify-content: center; }
+      .head-right { justify-content: center; }
       .layout { grid-template-columns: 1fr; }
+      aside.left, aside.right { position: static; }
       .controls { grid-template-columns: 1fr; }
-      aside.left, aside.right { position: static; max-height: none; }
       .detail-grid { grid-template-columns: 1fr; }
-      .headline { font-size: 32px; }
+      .headline { font-size: 34px; }
     }
   </style>
 </head>
@@ -403,6 +507,9 @@
   <header>
     <div class="brand">SYNTHETIC NEXUS</div>
     <nav class="top-nav" id="mainNav" aria-label="Primary navigation">
+  <header>
+    <div class="brand">SYNTHETIC NEXUS</div>
+    <nav class="top-nav" id="mainNav">
       <button data-view="home" class="active">HOME</button>
       <button data-action="openCategories">CATEGORIES</button>
       <button data-action="openVendors">VENDORS</button>
@@ -412,6 +519,10 @@
       <button data-action="openAuth">LOGIN</button>
     </nav>
     <div class="header-right">
+      <button data-action="openLeaderboard">LEADERBOARD</button>
+      <button data-action="openAuth">LOGIN</button>
+    </nav>
+    <div class="head-right">
       <button class="chip" id="wishlistBtn">♥ <span id="wishlistCount">0</span></button>
       <button class="chip" id="cartBtn">🛒 <span id="cartCount">0</span></button>
     </div>
@@ -442,6 +553,7 @@
       <div class="section" id="adminCategorySection" style="display:none">
         <h4 class="title">ADMIN CATEGORY MANAGER</h4>
         <p class="muted" style="margin-bottom:8px">Rename, add, or retire categories.</p>
+        <p class="muted" style="margin-bottom:8px">Rename categories, add new categories, and remove unused ones.</p>
         <div id="adminCategoryList"></div>
         <div style="height:8px"></div>
         <input id="newCategoryName" placeholder="New category name" />
@@ -459,6 +571,14 @@
     </aside>
 
     <main class="center panel">
+        <h4 class="title">QUICK STATS</h4>
+        <p class="muted">Products: <span id="statProducts"></span></p>
+        <p class="muted">Vendors: <span id="statVendors"></span></p>
+        <p class="muted">Orders: <span id="statOrders"></span></p>
+      </div>
+    </aside>
+
+    <main class="panel">
       <div class="controls">
         <input id="searchInput" placeholder="SEARCH MARKET... (name / desc / vendor)" />
         <select id="sortSelect">
@@ -518,6 +638,10 @@
         <div class="row" style="margin-top:6px"><span>Discount</span><span class="money" id="cartDiscount">$0.00</span></div>
         <div class="row" style="margin-top:6px"><strong>Grand Total</strong><strong class="money" id="cartGrandTotal">$0.00</strong></div>
 
+        <div class="row" style="margin-top:8px">
+          <span>Total</span>
+          <strong class="money" id="cartTotal"></strong>
+        </div>
         <div style="height:8px"></div>
         <input id="shipName" placeholder="Recipient name" />
         <div style="height:8px"></div>
@@ -547,6 +671,7 @@
       <div class="section">
         <h4 class="title">COINFLIP (FAIR)</h4>
         <p class="muted">Fair 50/50 result with transparent wallet accounting.</p>
+        <p class="muted">Fair 50/50 result. If you win, you receive 2× your stake.</p>
         <div class="row" style="margin-top:8px">
           <input id="coinflipAmount" type="number" min="1" step="1" value="25" />
           <select id="coinflipPick" style="max-width:120px">
@@ -719,6 +844,169 @@
         return inCategory && inQuery && inRating && inMin && inMax && inShipping;
       })
       .sort((a, b) => {
+    </aside>
+  </div>
+
+  <div class="modal" id="productModal">
+    <div class="panel modal-content" id="productModalContent"></div>
+  </div>
+
+  <div class="modal" id="vendorsModal">
+    <div class="panel modal-content">
+      <h2 class="title">VERIFIED VENDORS</h2>
+      <div id="vendorsList"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="featuresModal">
+    <div class="panel modal-content">
+      <h2 class="title">MARKET FEATURES</h2>
+      <ul id="featuresList"></ul>
+    </div>
+  </div>
+
+  <div class="modal" id="leaderboardModal">
+    <div class="panel modal-content">
+      <h2 class="title">TOP VENDORS (ROLLING 7-DAY)</h2>
+      <div id="leaderboardList"></div>
+    </div>
+  </div>
+
+  <div class="modal" id="authModal">
+    <div class="panel modal-content" style="max-width:560px">
+      <h2 class="title">ACCOUNT ACCESS</h2>
+
+      <h4 style="margin: 8px 0">Email Login</h4>
+      <input id="authEmail" type="email" placeholder="Email" />
+      <div style="height:8px"></div>
+      <input id="authPassword" type="password" placeholder="Password" />
+      <div style="height:10px"></div>
+      <div class="row">
+        <button class="btn secondary" id="registerBtn">Create Account</button>
+        <button class="btn" id="loginBtn">Sign In</button>
+      </div>
+
+      <div class="section">
+        <h4 class="title">PGP SIGN-IN (ADMIN CAPABLE)</h4>
+        <p class="muted" style="margin-bottom:8px">Paste your ASCII-armored PGP public key. First PGP admin login on this browser becomes Admin.</p>
+        <textarea id="pgpKeyInput" rows="7" placeholder="-----BEGIN PGP PUBLIC KEY BLOCK-----"></textarea>
+        <div style="height:8px"></div>
+        <button class="btn" id="pgpLoginBtn">LOGIN WITH PGP</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" id="coinflipModal">
+    <div class="panel modal-content" style="max-width:460px; text-align:center;">
+      <h2 class="title">COINFLIP RESULT</h2>
+      <div class="coin" id="coinVisual">?</div>
+      <p id="coinflipResultText"></p>
+      <div style="height:10px"></div>
+      <button class="btn secondary" onclick="closeModal('coinflipModal')">Close</button>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const defaultProducts = [
+      { id: 1, name: "Neon Arc Keyboard", price: 129, category: "Electronics", vendor: "NexusGear", rating: 4.8, shippingDays: 2, image: "https://picsum.photos/id/1/800/520", description: "Mechanical RGB keyboard with hot-swappable optical switches and aluminum frame.", stock: 34, addedOn: "2026-01-22" },
+      { id: 2, name: "Quantum Desk Lamp", price: 74, category: "Home", vendor: "LumaCore", rating: 4.6, shippingDays: 1, image: "https://picsum.photos/id/96/800/520", description: "Adaptive desk lamp with ambient sync and app controls.", stock: 41, addedOn: "2026-02-01" },
+      { id: 3, name: "Pulse Runner Pro", price: 159, category: "Sports", vendor: "StrideVault", rating: 4.7, shippingDays: 2, image: "https://picsum.photos/id/21/800/520", description: "Performance running shoes designed for neutral gait and race days.", stock: 52, addedOn: "2026-01-28" },
+      { id: 4, name: "Crystal Audio DAC", price: 219, category: "Electronics", vendor: "AuralForge", rating: 4.9, shippingDays: 3, image: "https://picsum.photos/id/180/800/520", description: "Portable high-fidelity DAC and headphone amp with balanced output.", stock: 19, addedOn: "2026-02-04" },
+      { id: 5, name: "Deep Rest Weighted Blanket", price: 95, category: "Home", vendor: "CalmHaven", rating: 4.5, shippingDays: 3, image: "https://picsum.photos/id/1060/800/520", description: "Cooling weighted blanket with removable hypoallergenic cover.", stock: 28, addedOn: "2026-01-18" },
+      { id: 6, name: "Orbit Messenger Bag", price: 88, category: "Fashion", vendor: "NorthThread", rating: 4.4, shippingDays: 2, image: "https://picsum.photos/id/250/800/520", description: "Urban messenger with weatherproof shell and padded tablet slot.", stock: 26, addedOn: "2026-01-31" },
+      { id: 7, name: "Hydra Smart Bottle", price: 49, category: "Sports", vendor: "StrideVault", rating: 4.3, shippingDays: 1, image: "https://picsum.photos/id/292/800/520", description: "Insulated smart bottle with hydration reminders and UV sanitization.", stock: 67, addedOn: "2026-02-05" },
+      { id: 8, name: "Velvet Roast Beans", price: 24, category: "Food", vendor: "BeanCircuit", rating: 4.9, shippingDays: 1, image: "https://picsum.photos/id/431/800/520", description: "Single-origin whole bean coffee, medium roast with cocoa notes.", stock: 120, addedOn: "2026-01-26" },
+      { id: 9, name: "Advanced Web Commerce", price: 39, category: "Books", vendor: "BytePress", rating: 4.8, shippingDays: 2, image: "https://picsum.photos/id/24/800/520", description: "Practical book on modern storefront architecture and optimization.", stock: 87, addedOn: "2026-01-14" },
+      { id: 10, name: "Photon Skin Kit", price: 69, category: "Beauty", vendor: "PureBloom", rating: 4.6, shippingDays: 2, image: "https://picsum.photos/id/64/800/520", description: "Daily skincare kit with cleanser, serum, and barrier cream.", stock: 58, addedOn: "2026-01-27" },
+      { id: 11, name: "Metro Travel Jacket", price: 142, category: "Fashion", vendor: "NorthThread", rating: 4.7, shippingDays: 3, image: "https://picsum.photos/id/30/800/520", description: "Lightweight travel jacket with hidden passport and RFID pocket.", stock: 22, addedOn: "2026-02-06" },
+      { id: 12, name: "Aurora Notebook Pro", price: 999, category: "Electronics", vendor: "NexusGear", rating: 4.9, shippingDays: 2, image: "https://picsum.photos/id/0/800/520", description: "14-inch productivity laptop with all-day battery and OLED display.", stock: 11, addedOn: "2026-02-07" }
+    ];
+
+    const featureList = [
+      "PGP-based identity login with admin role recognition by stored fingerprint.",
+      "Admin category manager to rename, add, and remove categories in real time.",
+      "Advanced product discovery with category, search, rating, shipping, and price filters.",
+      "Persistent cart, wishlist, wallet, orders, and profile session with local storage.",
+      "Full checkout flow including coupon support, payment method, and tax calculation.",
+      "Fair coinflip game with animated result modal and visible betting history.",
+      "Live simulated market chat/activity feed explicitly labeled for demo transparency.",
+      "Responsive 3-column desktop layout with centered main grid and neon visual polish."
+    ];
+
+    const state = {
+      products: JSON.parse(localStorage.getItem("snm_products") || "null") || structuredClone(defaultProducts),
+      selectedCategory: "All",
+      search: "",
+      sort: "featured",
+      minRating: 0,
+      minPrice: null,
+      maxPrice: null,
+      shippingFilter: "all",
+      page: 1,
+      perPage: 6,
+      cart: JSON.parse(localStorage.getItem("snm_cart") || "[]"),
+      wishlist: JSON.parse(localStorage.getItem("snm_wishlist") || "[]"),
+      orders: JSON.parse(localStorage.getItem("snm_orders") || "[]"),
+      wallet: Number(localStorage.getItem("snm_wallet") || 850),
+      user: JSON.parse(localStorage.getItem("snm_user") || "null"),
+      adminFingerprint: localStorage.getItem("snm_admin_fingerprint") || "",
+      coinflipHistory: JSON.parse(localStorage.getItem("snm_coinflip_history") || "[]"),
+      chatFeed: JSON.parse(localStorage.getItem("snm_chat_feed") || "[]")
+    };
+
+    const byId = (id) => document.getElementById(id);
+    const currency = (v) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
+
+    function persist() {
+      localStorage.setItem("snm_products", JSON.stringify(state.products));
+      localStorage.setItem("snm_cart", JSON.stringify(state.cart));
+      localStorage.setItem("snm_wishlist", JSON.stringify(state.wishlist));
+      localStorage.setItem("snm_orders", JSON.stringify(state.orders));
+      localStorage.setItem("snm_wallet", String(state.wallet));
+      localStorage.setItem("snm_user", JSON.stringify(state.user));
+      localStorage.setItem("snm_admin_fingerprint", state.adminFingerprint);
+      localStorage.setItem("snm_coinflip_history", JSON.stringify(state.coinflipHistory));
+      localStorage.setItem("snm_chat_feed", JSON.stringify(state.chatFeed.slice(0, 18)));
+    }
+
+    function toast(msg, good = true) {
+      const t = byId("toast");
+      t.textContent = msg;
+      t.style.display = "block";
+      t.style.background = good ? "#0d2f2a" : "#3a1020";
+      t.style.borderColor = good ? "#2de0b1" : "#ff4d7a";
+      setTimeout(() => (t.style.display = "none"), 2600);
+    }
+
+    function getCategories() {
+      return ["All", ...new Set(state.products.map(p => p.category))];
+    }
+
+    function getVendors() {
+      const map = {};
+      state.products.forEach((p) => {
+        if (!map[p.vendor]) map[p.vendor] = { name: p.vendor, ratingTotal: 0, count: 0, products: 0, sales: 0 };
+        map[p.vendor].ratingTotal += p.rating;
+        map[p.vendor].count += 1;
+        map[p.vendor].products += 1;
+        map[p.vendor].sales += Math.floor(p.stock * p.rating * 0.8);
+      });
+      return Object.values(map).map((v) => ({ ...v, rating: (v.ratingTotal / v.count).toFixed(2) }));
+    }
+
+    function filteredProducts() {
+      return state.products.filter((p) => {
+        const inCategory = state.selectedCategory === "All" || p.category === state.selectedCategory;
+        const searchable = `${p.name} ${p.vendor} ${p.description}`.toLowerCase();
+        const inSearch = searchable.includes(state.search);
+        const inRating = p.rating >= state.minRating;
+        const inMinPrice = state.minPrice == null || p.price >= state.minPrice;
+        const inMaxPrice = state.maxPrice == null || p.price <= state.maxPrice;
+        const inShipping = state.shippingFilter === "all" || String(p.shippingDays) === state.shippingFilter || (state.shippingFilter === "3" && p.shippingDays >= 3);
+        return inCategory && inSearch && inRating && inMinPrice && inMaxPrice && inShipping;
+      }).sort((a, b) => {
         if (state.sort === "priceAsc") return a.price - b.price;
         if (state.sort === "priceDesc") return b.price - a.price;
         if (state.sort === "ratingDesc") return b.rating - a.rating;
@@ -1353,5 +1641,528 @@
   render();
   selfCheck();
 </script>
+    }
+
+    function renderCategories() {
+      const categories = getCategories();
+      if (!categories.includes(state.selectedCategory)) state.selectedCategory = "All";
+
+      byId("categoryList").innerHTML = categories.map((cat) => `
+        <button class="cat-btn ${state.selectedCategory === cat ? "active" : ""}" data-cat="${cat}">${cat}</button>
+      `).join("");
+
+      document.querySelectorAll("#categoryList .cat-btn").forEach((btn) => {
+        btn.onclick = () => {
+          state.selectedCategory = btn.dataset.cat;
+          state.page = 1;
+          render();
+        };
+      });
+    }
+
+    function renderAdminCategories() {
+      const canAdmin = state.user?.role === "admin";
+      byId("adminCategorySection").style.display = canAdmin ? "block" : "none";
+      if (!canAdmin) return;
+
+      const categories = getCategories().filter((c) => c !== "All");
+      byId("adminCategoryList").innerHTML = categories.map((cat) => `
+        <div class="list-item">
+          <div class="row">
+            <input id="rename_${cat}" value="${cat}" />
+            <button class="btn secondary" onclick="renameCategory('${cat}')">SAVE</button>
+          </div>
+          <div style="height:6px"></div>
+          <button class="btn danger" style="width:100%" onclick="removeCategory('${cat}')">REMOVE CATEGORY</button>
+        </div>
+      `).join("");
+    }
+
+    function renderProducts() {
+      const all = filteredProducts();
+      const pages = Math.max(1, Math.ceil(all.length / state.perPage));
+      state.page = Math.min(state.page, pages);
+      const start = (state.page - 1) * state.perPage;
+      const pageItems = all.slice(start, start + state.perPage);
+
+      byId("productGrid").innerHTML = pageItems.map((p) => `
+        <article class="card">
+          <img src="${p.image}" alt="${p.name}" loading="lazy" />
+          <div class="cbody">
+            <h3 class="name">${p.name}</h3>
+            <p class="muted">${p.category} • ${p.vendor}</p>
+            <p class="muted">★ ${p.rating} • ${p.shippingDays}-day shipping • ${p.stock} in stock</p>
+            <p class="price">${currency(p.price)}</p>
+            <div class="row">
+              <button class="btn secondary" onclick="viewProduct(${p.id})">DETAILS</button>
+              <button class="btn" onclick="addToCart(${p.id})">ADD TO CART</button>
+            </div>
+            <div style="height:6px"></div>
+            <button class="btn secondary" style="width:100%" onclick="toggleWishlist(${p.id})">
+              ${state.wishlist.includes(p.id) ? "REMOVE FROM" : "ADD TO"} WISHLIST
+            </button>
+          </div>
+        </article>
+      `).join("");
+
+      byId("pageInfo").textContent = `Page ${state.page} of ${pages}`;
+      byId("prevPage").disabled = state.page <= 1;
+      byId("nextPage").disabled = state.page >= pages;
+    }
+
+    function renderCart() {
+      const lines = state.cart.map((i) => {
+        const p = state.products.find((x) => x.id === i.id);
+        return { ...i, name: p?.name || "Unknown", price: p?.price || 0 };
+      });
+
+      byId("cartList").innerHTML = lines.length ? lines.map((l) => `
+        <div class="list-item">
+          <div>${l.name}</div>
+          <div class="row" style="margin-top:5px">
+            <span>${l.qty} × ${currency(l.price)}</span>
+            <span class="money">${currency(l.qty * l.price)}</span>
+          </div>
+          <div class="row" style="margin-top:6px">
+            <button class="btn secondary" onclick="changeQty(${l.id}, -1)">-</button>
+            <button class="btn secondary" onclick="changeQty(${l.id}, 1)">+</button>
+            <button class="btn secondary" onclick="removeFromCart(${l.id})">REMOVE</button>
+          </div>
+        </div>
+      `).join("") : `<p class="muted">Cart is empty.</p>`;
+
+      const total = lines.reduce((sum, l) => sum + l.qty * l.price, 0);
+      byId("cartTotal").textContent = currency(total);
+      byId("cartCount").textContent = state.cart.reduce((sum, i) => sum + i.qty, 0);
+    }
+
+    function renderOrders() {
+      byId("orderList").innerHTML = state.orders.length ? state.orders.slice(0, 4).map((o) => `
+        <div class="list-item">
+          <div>#${o.id}</div>
+          <div class="muted">${o.date}</div>
+          <div class="row"><span>${o.status}</span><span class="money">${currency(o.total)}</span></div>
+        </div>
+      `).join("") : `<p class="muted">No orders yet.</p>`;
+    }
+
+    function renderCoinflipHistory() {
+      byId("coinflipHistory").innerHTML = state.coinflipHistory.length ? state.coinflipHistory.slice(0, 4).map((h) => `
+        <div class="list-item">
+          <div class="row"><span>${h.pick} vs ${h.result}</span><span>${h.outcome}</span></div>
+          <div class="row"><span>${h.date}</span><span class="money">${currency(h.amount)}</span></div>
+        </div>
+      `).join("") : `<p class="muted">No bets yet.</p>`;
+    }
+
+    function renderAccount() {
+      const isIn = Boolean(state.user);
+      byId("accountBlock").innerHTML = isIn
+        ? `<p>Signed in as <strong>${state.user.display}</strong></p><p class="muted">Role: ${state.user.role.toUpperCase()}</p>`
+        : `<p>Browsing as guest.</p><p class="muted">Sign in to checkout.</p>`;
+      byId("authToggleBtn").textContent = isIn ? "Logout" : "Sign In";
+      byId("walletBalance").textContent = currency(state.wallet);
+      byId("wishlistCount").textContent = state.wishlist.length;
+
+      const vendors = getVendors();
+      byId("statProducts").textContent = state.products.length;
+      byId("statVendors").textContent = vendors.length;
+      byId("statOrders").textContent = state.orders.length;
+    }
+
+    function renderChatFeed() {
+      byId("chatFeed").innerHTML = state.chatFeed.slice(0, 7).map((m) => `
+        <div class="list-item">
+          <div class="row"><span>${m.user}</span><span class="muted">${m.time}</span></div>
+          <div>${m.text}</div>
+        </div>
+      `).join("") || `<p class="muted">Feed warming up...</p>`;
+    }
+
+    function render() {
+      renderCategories();
+      renderAdminCategories();
+      renderProducts();
+      renderCart();
+      renderOrders();
+      renderCoinflipHistory();
+      renderAccount();
+      renderChatFeed();
+      persist();
+    }
+
+    function addToCart(id) {
+      const product = state.products.find((p) => p.id === id);
+      if (!product) return;
+      const row = state.cart.find((i) => i.id === id);
+      if (row) row.qty += 1;
+      else state.cart.push({ id, qty: 1 });
+      render();
+      toast(`${product.name} added to cart.`);
+    }
+
+    function removeFromCart(id) {
+      state.cart = state.cart.filter((i) => i.id !== id);
+      render();
+      toast("Item removed.");
+    }
+
+    function changeQty(id, delta) {
+      const row = state.cart.find((i) => i.id === id);
+      if (!row) return;
+      row.qty += delta;
+      if (row.qty <= 0) state.cart = state.cart.filter((i) => i.id !== id);
+      render();
+    }
+
+    function toggleWishlist(id) {
+      if (state.wishlist.includes(id)) state.wishlist = state.wishlist.filter((x) => x !== id);
+      else state.wishlist.push(id);
+      render();
+      toast("Wishlist updated.");
+    }
+
+    function checkout() {
+      if (!state.user) return toast("Sign in required before checkout.", false);
+      if (!state.cart.length) return toast("Your cart is empty.", false);
+
+      const recipient = byId("shipName").value.trim();
+      const address = byId("shipAddress").value.trim();
+      if (!recipient || !address) return toast("Shipping information is required.", false);
+
+      const subtotal = state.cart.reduce((sum, row) => {
+        const p = state.products.find((x) => x.id === row.id);
+        return sum + (p?.price || 0) * row.qty;
+      }, 0);
+      const tax = subtotal * 0.08;
+      const discount = byId("couponCode").value.trim().toUpperCase() === "SAVE10" ? subtotal * 0.1 : 0;
+      const total = subtotal + tax - discount;
+
+      if (state.wallet < total) return toast("Insufficient balance.", false);
+
+      state.wallet -= total;
+      const orderId = `SN-${Date.now().toString().slice(-8)}`;
+      state.orders.unshift({
+        id: orderId,
+        date: new Date().toLocaleString(),
+        status: "Processing",
+        recipient,
+        address,
+        payment: byId("paymentMethod").value,
+        items: state.cart.map((i) => ({ ...i })),
+        subtotal,
+        tax,
+        discount,
+        total
+      });
+
+      state.cart = [];
+      byId("shipName").value = "";
+      byId("shipAddress").value = "";
+      byId("couponCode").value = "";
+
+      render();
+      toast(`Order ${orderId} placed.`);
+    }
+
+    function viewProduct(id) {
+      const p = state.products.find((x) => x.id === id);
+      if (!p) return;
+      byId("productModalContent").innerHTML = `
+        <div class="detail-grid">
+          <img src="${p.image}" alt="${p.name}" style="width:100%; border-radius:8px; min-height:240px; object-fit:cover;" />
+          <div>
+            <h2 class="title" style="font-size:24px">${p.name}</h2>
+            <p class="muted">Vendor: ${p.vendor}</p>
+            <p class="muted">Category: ${p.category}</p>
+            <p class="muted">Rating: ★ ${p.rating}</p>
+            <p class="muted">Shipping ETA: ${p.shippingDays} day(s)</p>
+            <p class="muted">Stock: ${p.stock}</p>
+            <p style="margin: 10px 0">${p.description}</p>
+            <h3 class="price">${currency(p.price)}</h3>
+            <div class="row" style="margin-top:10px">
+              <button class="btn" onclick="addToCart(${p.id}); closeModal('productModal')">ADD TO CART</button>
+              <button class="btn secondary" onclick="toggleWishlist(${p.id})">WISHLIST</button>
+            </div>
+          </div>
+        </div>
+      `;
+      openModal("productModal");
+    }
+
+    function fingerprintFromPGP(text) {
+      let hash = 0;
+      for (let i = 0; i < text.length; i += 1) hash = ((hash << 5) - hash + text.charCodeAt(i)) | 0;
+      return `PGP-${Math.abs(hash).toString(16).toUpperCase().padStart(8, "0")}`;
+    }
+
+    function loginWithPGP() {
+      const key = byId("pgpKeyInput").value.trim();
+      if (!key.includes("BEGIN PGP PUBLIC KEY BLOCK") || !key.includes("END PGP PUBLIC KEY BLOCK")) {
+        return toast("Invalid PGP key format.", false);
+      }
+      const fp = fingerprintFromPGP(key);
+      if (!state.adminFingerprint) state.adminFingerprint = fp;
+      const role = state.adminFingerprint === fp ? "admin" : "member";
+      state.user = { role, pgpFingerprint: fp, display: fp };
+      closeModal("authModal");
+      render();
+      toast(role === "admin" ? `PGP login successful. Admin recognized (${fp}).` : `PGP login successful (${fp}).`);
+    }
+
+    function registerEmail() {
+      const email = byId("authEmail").value.trim().toLowerCase();
+      const password = byId("authPassword").value;
+      if (!email || !password) return toast("Email and password are required.", false);
+      localStorage.setItem(`snm_account_${email}`, JSON.stringify({ email, password }));
+      toast("Account created.");
+    }
+
+    function loginEmail() {
+      const email = byId("authEmail").value.trim().toLowerCase();
+      const password = byId("authPassword").value;
+      const account = JSON.parse(localStorage.getItem(`snm_account_${email}`) || "null");
+      if (!account || account.password !== password) return toast("Invalid credentials.", false);
+      state.user = { role: "member", display: email };
+      closeModal("authModal");
+      render();
+      toast("Logged in.");
+    }
+
+    function logoutOrOpenAuth() {
+      if (state.user) {
+        state.user = null;
+        render();
+        toast("Logged out.");
+      } else openModal("authModal");
+    }
+
+    function renameCategory(oldName) {
+      if (state.user?.role !== "admin") return toast("Admin access required.", false);
+      const next = byId(`rename_${oldName}`)?.value.trim();
+      if (!next) return toast("Category name cannot be empty.", false);
+      if (next === "All") return toast("Reserved category name.", false);
+      const exists = getCategories().includes(next);
+      if (exists && next !== oldName) return toast("Category already exists.", false);
+
+      state.products = state.products.map((p) => p.category === oldName ? { ...p, category: next } : p);
+      if (state.selectedCategory === oldName) state.selectedCategory = next;
+      render();
+      toast(`Category renamed to ${next}.`);
+    }
+
+    function removeCategory(cat) {
+      if (state.user?.role !== "admin") return toast("Admin access required.", false);
+      const fallback = "Uncategorized";
+      state.products = state.products.map((p) => p.category === cat ? { ...p, category: fallback } : p);
+      if (state.selectedCategory === cat) state.selectedCategory = "All";
+      render();
+      toast(`Category ${cat} removed. Items moved to ${fallback}.`);
+    }
+
+    function addCategory() {
+      if (state.user?.role !== "admin") return toast("Admin access required.", false);
+      const name = byId("newCategoryName").value.trim();
+      if (!name || name === "All") return toast("Invalid category name.", false);
+      if (getCategories().includes(name)) return toast("Category already exists.", false);
+
+      const nextId = Math.max(...state.products.map((p) => p.id)) + 1;
+      state.products.push({
+        id: nextId,
+        name: `${name} Starter Item`,
+        price: 59,
+        category: name,
+        vendor: "NexusGear",
+        rating: 4.3,
+        shippingDays: 2,
+        image: "https://picsum.photos/seed/newcat/800/520",
+        description: `Admin-created starter listing for ${name}.`,
+        stock: 20,
+        addedOn: new Date().toISOString().slice(0, 10)
+      });
+
+      byId("newCategoryName").value = "";
+      render();
+      toast(`Category ${name} created.`);
+    }
+
+    function runCoinflip() {
+      const amount = Number(byId("coinflipAmount").value);
+      const pick = byId("coinflipPick").value;
+
+      if (!state.user) return toast("Sign in required to bet.", false);
+      if (!Number.isFinite(amount) || amount <= 0) return toast("Enter a valid bet amount.", false);
+      if (amount > state.wallet) return toast("Bet exceeds wallet balance.", false);
+
+      state.wallet -= amount;
+      const result = Math.random() < 0.5 ? "Heads" : "Tails";
+      const isWin = result === pick;
+      if (isWin) state.wallet += amount * 2;
+
+      const history = {
+        amount,
+        pick,
+        result,
+        outcome: isWin ? "WIN" : "LOSS",
+        date: new Date().toLocaleTimeString()
+      };
+      state.coinflipHistory.unshift(history);
+
+      const coin = byId("coinVisual");
+      coin.textContent = "...";
+      coin.classList.remove("flipping");
+      void coin.offsetWidth;
+      coin.classList.add("flipping");
+
+      byId("coinflipResultText").textContent = "Flipping...";
+      openModal("coinflipModal");
+
+      setTimeout(() => {
+        coin.textContent = result;
+        byId("coinflipResultText").textContent = `You picked ${pick}. Coin landed ${result}. ${isWin ? "You won!" : "You lost."}`;
+        render();
+      }, 1750);
+    }
+
+    function fillVendorsModal() {
+      const vendors = getVendors();
+      byId("vendorsList").innerHTML = vendors.map((v) => `
+        <div class="list-item">
+          <div class="row"><strong>${v.name}</strong><span>★ ${v.rating}</span></div>
+          <div class="muted">${v.products} products • ${v.sales.toLocaleString()} modeled sales</div>
+        </div>
+      `).join("");
+    }
+
+    function fillFeaturesModal() {
+      byId("featuresList").innerHTML = featureList.map((f) => `<li class="list-item">${f}</li>`).join("");
+    }
+
+    function fillLeaderboardModal() {
+      const top = getVendors().sort((a, b) => b.sales - a.sales).slice(0, 5);
+      byId("leaderboardList").innerHTML = top.map((v, i) => `
+        <div class="list-item row"><span>#${i + 1} ${v.name}</span><span>${v.sales.toLocaleString()} sales</span></div>
+      `).join("");
+    }
+
+    const simulatedUsers = ["byte_hound", "nova_13", "luna_ops", "gearhunter", "pulse_zen", "atlas-cart", "neonbuyer", "pixelfox"];
+    const simulatedMessages = [
+      "Just received my order, packaging was perfect.",
+      "Price drop alert on Electronics right now.",
+      "Anyone tried the new Aurora Notebook Pro?",
+      "Fast shipping this week from NexusGear.",
+      "Coupon SAVE10 worked at checkout.",
+      "Looking for recommendations in Home category.",
+      "Order status updated to shipped.",
+      "Adding another item to wishlist."
+    ];
+
+    function pushSimulatedFeedMessage() {
+      const user = simulatedUsers[Math.floor(Math.random() * simulatedUsers.length)];
+      const text = simulatedMessages[Math.floor(Math.random() * simulatedMessages.length)];
+      state.chatFeed.unshift({ user, text, time: new Date().toLocaleTimeString() });
+      state.chatFeed = state.chatFeed.slice(0, 18);
+      renderChatFeed();
+      persist();
+    }
+
+    function openModal(id) { byId(id).style.display = "flex"; }
+    function closeModal(id) { byId(id).style.display = "none"; }
+
+    window.viewProduct = viewProduct;
+    window.addToCart = addToCart;
+    window.removeFromCart = removeFromCart;
+    window.changeQty = changeQty;
+    window.toggleWishlist = toggleWishlist;
+    window.renameCategory = renameCategory;
+    window.removeCategory = removeCategory;
+    window.closeModal = closeModal;
+
+    byId("searchInput").oninput = (e) => { state.search = e.target.value.toLowerCase().trim(); state.page = 1; render(); };
+    byId("sortSelect").onchange = (e) => { state.sort = e.target.value; render(); };
+    byId("minRating").onchange = (e) => { state.minRating = Number(e.target.value); state.page = 1; render(); };
+    byId("shippingFilter").onchange = (e) => { state.shippingFilter = e.target.value; state.page = 1; render(); };
+
+    byId("minPrice").oninput = (e) => { state.minPrice = e.target.value ? Number(e.target.value) : null; state.page = 1; render(); };
+    byId("maxPrice").oninput = (e) => { state.maxPrice = e.target.value ? Number(e.target.value) : null; state.page = 1; render(); };
+
+    byId("clearFilters").onclick = () => {
+      state.selectedCategory = "All";
+      state.search = "";
+      state.sort = "featured";
+      state.minRating = 0;
+      state.minPrice = null;
+      state.maxPrice = null;
+      state.shippingFilter = "all";
+      state.page = 1;
+
+      byId("searchInput").value = "";
+      byId("sortSelect").value = "featured";
+      byId("minRating").value = "0";
+      byId("shippingFilter").value = "all";
+      byId("minPrice").value = "";
+      byId("maxPrice").value = "";
+      render();
+    };
+
+    byId("prevPage").onclick = () => { if (state.page > 1) { state.page -= 1; render(); } };
+    byId("nextPage").onclick = () => {
+      const pages = Math.ceil(filteredProducts().length / state.perPage);
+      if (state.page < pages) { state.page += 1; render(); }
+    };
+
+    byId("depositBtn").onclick = () => {
+      const amount = Number(byId("depositAmount").value);
+      if (!Number.isFinite(amount) || amount <= 0) return toast("Enter a valid amount.", false);
+      state.wallet += amount;
+      render();
+      toast(`${currency(amount)} deposited.`);
+    };
+
+    byId("checkoutBtn").onclick = checkout;
+    byId("coinflipBtn").onclick = runCoinflip;
+
+    byId("wishlistBtn").onclick = () => {
+      if (!state.wishlist.length) return toast("Wishlist empty.", false);
+      const names = state.wishlist.map((id) => state.products.find((p) => p.id === id)?.name).filter(Boolean);
+      toast(`Wishlist: ${names.slice(0, 3).join(", ")}${names.length > 3 ? "..." : ""}`);
+    };
+
+    byId("cartBtn").onclick = () => document.querySelector("aside.right").scrollIntoView({ behavior: "smooth" });
+
+    byId("registerBtn").onclick = registerEmail;
+    byId("loginBtn").onclick = loginEmail;
+    byId("pgpLoginBtn").onclick = loginWithPGP;
+    byId("authToggleBtn").onclick = logoutOrOpenAuth;
+    byId("addCategoryBtn").onclick = addCategory;
+
+    document.querySelectorAll("#mainNav button").forEach((btn) => {
+      btn.onclick = () => {
+        document.querySelectorAll("#mainNav button").forEach((b) => b.classList.remove("active"));
+        btn.classList.add("active");
+        const action = btn.dataset.action;
+        if (btn.dataset.view === "home") window.scrollTo({ top: 0, behavior: "smooth" });
+        if (action === "openCategories") byId("categoryPane").scrollIntoView({ behavior: "smooth" });
+        if (action === "openVendors") { fillVendorsModal(); openModal("vendorsModal"); }
+        if (action === "openFeatures") { fillFeaturesModal(); openModal("featuresModal"); }
+        if (action === "openLeaderboard") { fillLeaderboardModal(); openModal("leaderboardModal"); }
+        if (action === "openAuth") openModal("authModal");
+      };
+    });
+
+    ["productModal", "vendorsModal", "featuresModal", "leaderboardModal", "authModal", "coinflipModal"].forEach((id) => {
+      byId(id).addEventListener("click", (e) => {
+        if (e.target.id === id) closeModal(id);
+      });
+    });
+
+    if (!state.chatFeed.length) {
+      for (let i = 0; i < 6; i += 1) pushSimulatedFeedMessage();
+    }
+
+    setInterval(pushSimulatedFeedMessage, 6000);
+
+    render();
+  </script>
 </body>
 </html>
