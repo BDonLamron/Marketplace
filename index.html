@@ -85,6 +85,8 @@
     .top-nav {
       display: flex;
       justify-content: center;
+      flex-wrap: wrap;
+      gap: 18px;
       align-items: center;
       gap: 22px;
       flex-wrap: wrap;
@@ -106,6 +108,9 @@
       text-shadow: 0 0 8px var(--cyan);
     }
 
+    .header-right {
+      display: flex;
+      justify-content: flex-end;
     .head-right {
       display: flex;
       justify-content: flex-end;
@@ -115,6 +120,19 @@
 
     .chip {
       border: 1px solid var(--pink);
+      border-radius: 8px;
+      background: #1d0a2c;
+      color: var(--text);
+      cursor: pointer;
+      padding: 7px 10px;
+      font-family: inherit;
+    }
+
+    .layout {
+      width: min(1620px, calc(100% - 24px));
+      margin: 14px auto 20px;
+      display: grid;
+      grid-template-columns: 280px minmax(760px, 1fr) 340px;
       background: #1b082a;
       border-radius: 7px;
       padding: 7px 10px;
@@ -143,6 +161,11 @@
 
     aside.left,
     aside.right {
+      position: sticky;
+      top: 82px;
+      max-height: calc(100vh - 95px);
+      overflow: auto;
+      padding: 14px;
       padding: 14px;
       position: sticky;
       top: 82px;
@@ -152,6 +175,19 @@
     .title {
       margin: 0 0 10px;
       color: var(--pink);
+      text-shadow: 0 0 7px var(--pink);
+      font-size: 15px;
+    }
+
+    .section {
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid #391553;
+    }
+
+    .muted { color: var(--muted); font-size: 13px; }
+    .money { color: var(--green); }
+
       text-shadow: 0 0 8px var(--pink);
       font-size: 15px;
     }
@@ -170,6 +206,10 @@
     input, select, textarea {
       width: 100%;
       border: 1px solid var(--pink);
+      border-radius: 7px;
+      background: var(--bg-soft);
+      color: var(--text);
+      padding: 9px 10px;
       background: var(--bg-soft);
       color: var(--text);
       border-radius: 7px;
@@ -181,6 +221,10 @@
 
     .btn {
       border: 1px solid var(--pink);
+      border-radius: 7px;
+      background: linear-gradient(180deg, #ff1c5a, #a10041);
+      color: #fff;
+      padding: 8px 10px;
       background: linear-gradient(180deg, #ff1453, #a70042);
       color: #fff;
       padding: 8px 10px;
@@ -190,6 +234,7 @@
     }
 
     .btn.secondary {
+      background: #230d35;
       background: #220c35;
       border-color: var(--cyan);
     }
@@ -197,6 +242,13 @@
     .btn.warn {
       background: #3f2a08;
       border-color: var(--warn);
+      color: #ffd89a;
+    }
+
+    .btn.danger {
+      background: #3a1222;
+      border-color: var(--danger);
+      color: #ffc1d3;
       color: #ffd794;
     }
 
@@ -210,6 +262,12 @@
       width: 100%;
       text-align: left;
       border: 1px solid transparent;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      padding: 8px 9px;
+      margin-bottom: 6px;
       background: transparent;
       color: var(--text);
       border-radius: 6px;
@@ -220,6 +278,18 @@
 
     .cat-btn:hover,
     .cat-btn.active {
+      background: #2d0c3d;
+      border-color: var(--pink);
+    }
+
+    main.center {
+      min-height: 400px;
+    }
+
+    .controls {
+      padding: 14px;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
       background: #2a0b3b;
       border-color: var(--pink);
     }
@@ -236,6 +306,8 @@
       margin: 10px 0 16px;
       text-align: center;
       color: var(--red);
+      text-shadow: 0 0 14px var(--red);
+      font-size: 42px;
       font-size: 46px;
       text-shadow: 0 0 14px var(--red);
       letter-spacing: .9px;
@@ -246,6 +318,9 @@
       width: 8px;
       height: 8px;
       border-radius: 50%;
+      margin-right: 8px;
+      background: var(--green);
+      animation: pulseDot 1s infinite;
       background: var(--green);
       margin-right: 8px;
       animation: blinkDot 1s infinite;
@@ -265,6 +340,19 @@
       overflow: hidden;
       display: flex;
       flex-direction: column;
+      animation: glow 3s infinite;
+    }
+
+    .card img {
+      width: 100%;
+      height: 155px;
+      object-fit: cover;
+    }
+
+    .cbody { padding: 10px; }
+
+    .name {
+      margin: 0 0 6px;
       animation: pulseGlow 3s ease-in-out infinite;
     }
 
@@ -278,6 +366,26 @@
       font-size: 17px;
     }
 
+    .price {
+      margin: 7px 0;
+      color: var(--green);
+      font-size: 18px;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pill {
+      border: 1px solid #5b2888;
+      border-radius: 999px;
+      background: #19062d;
+      padding: 6px 10px;
+      font-size: 12px;
+    }
     .price { margin: 7px 0; color: var(--green); font-size: 18px; }
 
     .row { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
@@ -290,6 +398,20 @@
       gap: 10px;
     }
 
+    .list-item {
+      border-bottom: 1px solid #381552;
+      padding: 9px 0;
+      font-size: 13px;
+    }
+
+    .feed-tag {
+      color: #9cdcff;
+      font-size: 11px;
+      border: 1px solid #2f6ca0;
+      border-radius: 999px;
+      padding: 1px 7px;
+      display: inline-block;
+      margin-bottom: 6px;
     .pill {
       border: 1px solid #562283;
       background: #18062a;
@@ -307,8 +429,8 @@
     .modal {
       position: fixed;
       inset: 0;
-      z-index: 60;
-      background: rgba(0,0,0,.8);
+      z-index: 80;
+      background: rgba(0, 0, 0, 0.8);
       display: none;
       align-items: center;
       justify-content: center;
@@ -316,7 +438,7 @@
     }
 
     .modal-content {
-      width: min(900px, 100%);
+      width: min(960px, 100%);
       max-height: 90vh;
       overflow: auto;
       padding: 16px;
@@ -328,23 +450,9 @@
       gap: 12px;
     }
 
-    .toast {
-      position: fixed;
-      right: 14px;
-      bottom: 14px;
-      z-index: 70;
-      display: none;
-      background: #0d2f2a;
-      border: 1px solid #2de0b1;
-      color: #bafde8;
-      border-radius: 7px;
-      padding: 8px 12px;
-      font-size: 13px;
-    }
-
     .coin {
-      width: 130px;
-      height: 130px;
+      width: 124px;
+      height: 124px;
       margin: 12px auto;
       border-radius: 50%;
       border: 3px solid #ffd27f;
@@ -395,6 +503,10 @@
   </style>
 </head>
 <body>
+<div class="app">
+  <header>
+    <div class="brand">SYNTHETIC NEXUS</div>
+    <nav class="top-nav" id="mainNav" aria-label="Primary navigation">
   <header>
     <div class="brand">SYNTHETIC NEXUS</div>
     <nav class="top-nav" id="mainNav">
@@ -402,6 +514,11 @@
       <button data-action="openCategories">CATEGORIES</button>
       <button data-action="openVendors">VENDORS</button>
       <button data-action="openFeatures">FEATURES</button>
+      <button data-action="openProfile">PROFILE</button>
+      <button data-action="openLeaderboard">LEADERBOARD</button>
+      <button data-action="openAuth">LOGIN</button>
+    </nav>
+    <div class="header-right">
       <button data-action="openLeaderboard">LEADERBOARD</button>
       <button data-action="openAuth">LOGIN</button>
     </nav>
@@ -435,6 +552,7 @@
 
       <div class="section" id="adminCategorySection" style="display:none">
         <h4 class="title">ADMIN CATEGORY MANAGER</h4>
+        <p class="muted" style="margin-bottom:8px">Rename, add, or retire categories.</p>
         <p class="muted" style="margin-bottom:8px">Rename categories, add new categories, and remove unused ones.</p>
         <div id="adminCategoryList"></div>
         <div style="height:8px"></div>
@@ -444,6 +562,15 @@
       </div>
 
       <div class="section">
+        <h4 class="title">SITE METRICS</h4>
+        <p class="muted">Products: <span id="statProducts"></span></p>
+        <p class="muted">Vendors: <span id="statVendors"></span></p>
+        <p class="muted">Orders: <span id="statOrders"></span></p>
+        <p class="muted">Users: <span id="statUsers"></span></p>
+      </div>
+    </aside>
+
+    <main class="center panel">
         <h4 class="title">QUICK STATS</h4>
         <p class="muted">Products: <span id="statProducts"></span></p>
         <p class="muted">Vendors: <span id="statVendors"></span></p>
@@ -494,11 +621,23 @@
           <input id="depositAmount" type="number" value="100" min="1" step="1" />
           <button class="btn secondary" id="depositBtn">Deposit</button>
         </div>
+        <div style="height:6px"></div>
+        <div class="row">
+          <input id="withdrawAmount" type="number" value="50" min="1" step="1" />
+          <button class="btn warn" id="withdrawBtn">Withdraw</button>
+        </div>
+        <div id="walletLedger"></div>
       </div>
 
       <div class="section">
         <h4 class="title">CART</h4>
         <div id="cartList"></div>
+        <div class="row" style="margin-top:8px"><span>Total</span><strong class="money" id="cartTotal"></strong></div>
+        <div class="row" style="margin-top:6px"><span>Tax (8%)</span><span class="money" id="cartTax">$0.00</span></div>
+        <div class="row" style="margin-top:6px"><span>Shipping</span><span class="money" id="cartShipping">$0.00</span></div>
+        <div class="row" style="margin-top:6px"><span>Discount</span><span class="money" id="cartDiscount">$0.00</span></div>
+        <div class="row" style="margin-top:6px"><strong>Grand Total</strong><strong class="money" id="cartGrandTotal">$0.00</strong></div>
+
         <div class="row" style="margin-top:8px">
           <span>Total</span>
           <strong class="money" id="cartTotal"></strong>
@@ -514,6 +653,11 @@
           <option value="wire">Bank Transfer</option>
         </select>
         <div style="height:8px"></div>
+        <select id="shippingMethod">
+          <option value="standard">Standard Shipping ($0)</option>
+          <option value="express">Express Shipping ($12)</option>
+        </select>
+        <div style="height:8px"></div>
         <input id="couponCode" placeholder="Coupon (SAVE10)" />
         <div style="height:8px"></div>
         <button class="btn" id="checkoutBtn">Place Order</button>
@@ -526,6 +670,7 @@
 
       <div class="section">
         <h4 class="title">COINFLIP (FAIR)</h4>
+        <p class="muted">Fair 50/50 result with transparent wallet accounting.</p>
         <p class="muted">Fair 50/50 result. If you win, you receive 2× your stake.</p>
         <div class="row" style="margin-top:8px">
           <input id="coinflipAmount" type="number" min="1" step="1" value="25" />
@@ -544,6 +689,161 @@
         <span class="feed-tag">SIMULATED ACTIVITY FEED</span>
         <div id="chatFeed"></div>
       </div>
+
+      <div class="section" id="vendorConsole" style="display:none">
+        <h4 class="title">VENDOR CONSOLE</h4>
+        <p class="muted">Create listings and monitor sales.</p>
+        <input id="vendorProductName" placeholder="Product name" />
+        <div style="height:6px"></div>
+        <input id="vendorProductPrice" type="number" min="1" step="1" placeholder="Price" />
+        <div style="height:6px"></div>
+        <input id="vendorProductCategory" placeholder="Category" />
+        <div style="height:6px"></div>
+        <input id="vendorProductStock" type="number" min="1" step="1" placeholder="Stock" />
+        <div style="height:6px"></div>
+        <button class="btn secondary" id="addVendorProductBtn">ADD LISTING</button>
+        <div id="vendorStats"></div>
+      </div>
+    </aside>
+  </div>
+
+  <div class="modal" id="productModal"><div class="panel modal-content" id="productModalContent"></div></div>
+  <div class="modal" id="vendorsModal"><div class="panel modal-content"><h2 class="title">VERIFIED VENDORS</h2><div id="vendorsList"></div></div></div>
+  <div class="modal" id="featuresModal"><div class="panel modal-content"><h2 class="title">SITE FEATURES</h2><ul id="featuresList"></ul></div></div>
+  <div class="modal" id="profileModal"><div class="panel modal-content" style="max-width:640px"><h2 class="title">PROFILE</h2><div id="profileView"></div></div></div>
+  <div class="modal" id="leaderboardModal"><div class="panel modal-content" style="max-width:640px"><h2 class="title">LEADERBOARD</h2><div id="leaderboardView"></div></div></div>
+
+  <div class="modal" id="authModal"><div class="panel modal-content" style="max-width:560px">
+    <h2 class="title">ACCOUNT ACCESS</h2>
+    <h4 style="margin:8px 0">Email Login</h4>
+    <input id="authEmail" type="email" placeholder="Email" />
+    <div style="height:8px"></div>
+    <input id="authPassword" type="password" placeholder="Password" />
+    <div style="height:8px"></div>
+    <select id="authRole"><option value="member">Member</option><option value="vendor">Vendor</option></select>
+    <div style="height:10px"></div>
+    <div class="row"><button class="btn secondary" id="registerBtn">Create Account</button><button class="btn" id="loginBtn">Sign In</button></div>
+
+    <div class="section">
+      <h4 class="title">PGP SIGN-IN (ADMIN CAPABLE)</h4>
+      <p class="muted">First valid PGP key to sign in on this browser becomes admin fingerprint.</p>
+      <textarea id="pgpKeyInput" rows="7" placeholder="-----BEGIN PGP PUBLIC KEY BLOCK-----"></textarea>
+      <div style="height:8px"></div>
+      <button class="btn" id="pgpLoginBtn">LOGIN WITH PGP</button>
+    </div>
+  </div></div>
+
+  <div class="modal" id="coinflipModal"><div class="panel modal-content" style="max-width:460px;text-align:center"><h2 class="title">COINFLIP RESULT</h2><div class="coin" id="coinVisual">?</div><p id="coinflipResultText"></p><div style="height:10px"></div><button class="btn secondary" onclick="closeModal('coinflipModal')">Close</button></div></div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+  const defaultProducts = [
+    { id: 1, name: "Neon Arc Keyboard", price: 129, category: "Electronics", vendor: "NexusGear", rating: 4.8, shippingDays: 2, image: "https://picsum.photos/id/1/800/520", description: "Mechanical RGB keyboard with hot-swappable optical switches and aluminum frame.", stock: 34, addedOn: "2026-01-22" },
+    { id: 2, name: "Quantum Desk Lamp", price: 74, category: "Home", vendor: "LumaCore", rating: 4.6, shippingDays: 1, image: "https://picsum.photos/id/96/800/520", description: "Adaptive desk lamp with ambient sync and app controls.", stock: 41, addedOn: "2026-02-01" },
+    { id: 3, name: "Pulse Runner Pro", price: 159, category: "Sports", vendor: "StrideVault", rating: 4.7, shippingDays: 2, image: "https://picsum.photos/id/21/800/520", description: "Performance running shoes designed for neutral gait and race days.", stock: 52, addedOn: "2026-01-28" },
+    { id: 4, name: "Crystal Audio DAC", price: 219, category: "Electronics", vendor: "AuralForge", rating: 4.9, shippingDays: 3, image: "https://picsum.photos/id/180/800/520", description: "Portable high-fidelity DAC and headphone amp with balanced output.", stock: 19, addedOn: "2026-02-04" },
+    { id: 5, name: "Deep Rest Weighted Blanket", price: 95, category: "Home", vendor: "CalmHaven", rating: 4.5, shippingDays: 3, image: "https://picsum.photos/id/1060/800/520", description: "Cooling weighted blanket with removable hypoallergenic cover.", stock: 28, addedOn: "2026-01-18" },
+    { id: 6, name: "Orbit Messenger Bag", price: 88, category: "Fashion", vendor: "NorthThread", rating: 4.4, shippingDays: 2, image: "https://picsum.photos/id/250/800/520", description: "Urban messenger with weatherproof shell and padded tablet slot.", stock: 26, addedOn: "2026-01-31" },
+    { id: 7, name: "Hydra Smart Bottle", price: 49, category: "Sports", vendor: "StrideVault", rating: 4.3, shippingDays: 1, image: "https://picsum.photos/id/292/800/520", description: "Insulated smart bottle with hydration reminders and UV sanitization.", stock: 67, addedOn: "2026-02-05" },
+    { id: 8, name: "Velvet Roast Beans", price: 24, category: "Food", vendor: "BeanCircuit", rating: 4.9, shippingDays: 1, image: "https://picsum.photos/id/431/800/520", description: "Single-origin whole bean coffee, medium roast with cocoa notes.", stock: 120, addedOn: "2026-01-26" },
+    { id: 9, name: "Advanced Web Commerce", price: 39, category: "Books", vendor: "BytePress", rating: 4.8, shippingDays: 2, image: "https://picsum.photos/id/24/800/520", description: "Practical book on storefront architecture and optimization.", stock: 87, addedOn: "2026-01-14" },
+    { id: 10, name: "Photon Skin Kit", price: 69, category: "Beauty", vendor: "PureBloom", rating: 4.6, shippingDays: 2, image: "https://picsum.photos/id/64/800/520", description: "Daily skincare kit with cleanser, serum, and barrier cream.", stock: 58, addedOn: "2026-01-27" }
+  ];
+
+  const featureList = [
+    "Role-based auth (member, vendor, admin via PGP fingerprint)",
+    "Admin category management (rename, add, retire)",
+    "Vendor console for new listing creation and sales stats",
+    "Profile management with editable identity/contact/shipping",
+    "Wallet with ledger, deposit/withdraw, checkout and coinflip accounting",
+    "Complete buyer flow: search/filter/sort, wishlist, cart, checkout, order history",
+    "Responsive 3-column desktop layout and hosted-static readiness",
+    "Live simulated activity feed explicitly labeled as simulated"
+  ];
+
+  const state = {
+    products: JSON.parse(localStorage.getItem("snm_products") || "null") || structuredClone(defaultProducts),
+    users: JSON.parse(localStorage.getItem("snm_users") || "{}"),
+    selectedCategory: "All",
+    search: "",
+    sort: "featured",
+    minRating: 0,
+    minPrice: null,
+    maxPrice: null,
+    shippingFilter: "all",
+    page: 1,
+    perPage: 6,
+    cart: JSON.parse(localStorage.getItem("snm_cart") || "[]"),
+    wishlist: JSON.parse(localStorage.getItem("snm_wishlist") || "[]"),
+    orders: JSON.parse(localStorage.getItem("snm_orders") || "[]"),
+    wallet: Number(localStorage.getItem("snm_wallet") || 850),
+    walletLedger: JSON.parse(localStorage.getItem("snm_wallet_ledger") || "[]"),
+    user: JSON.parse(localStorage.getItem("snm_user") || "null"),
+    adminFingerprint: localStorage.getItem("snm_admin_fingerprint") || "",
+    coinflipHistory: JSON.parse(localStorage.getItem("snm_coinflip_history") || "[]"),
+    chatFeed: JSON.parse(localStorage.getItem("snm_chat_feed") || "[]")
+  };
+
+  const byId = (id) => document.getElementById(id);
+  const currency = (v) => new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" }).format(v);
+
+  function escapeHtml(str) {
+    return String(str).replace(/[&<>"]/g, (s) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[s]));
+  }
+  function escapeAttr(str) { return String(str).replace(/'/g, "\\'"); }
+  function cssSafe(str) { return String(str).replace(/[^a-zA-Z0-9_-]/g, "_"); }
+
+  function persist() {
+    localStorage.setItem("snm_products", JSON.stringify(state.products));
+    localStorage.setItem("snm_users", JSON.stringify(state.users));
+    localStorage.setItem("snm_cart", JSON.stringify(state.cart));
+    localStorage.setItem("snm_wishlist", JSON.stringify(state.wishlist));
+    localStorage.setItem("snm_orders", JSON.stringify(state.orders));
+    localStorage.setItem("snm_wallet", String(state.wallet));
+    localStorage.setItem("snm_wallet_ledger", JSON.stringify(state.walletLedger.slice(0, 20)));
+    localStorage.setItem("snm_user", JSON.stringify(state.user));
+    localStorage.setItem("snm_admin_fingerprint", state.adminFingerprint);
+    localStorage.setItem("snm_coinflip_history", JSON.stringify(state.coinflipHistory.slice(0, 12)));
+    localStorage.setItem("snm_chat_feed", JSON.stringify(state.chatFeed.slice(0, 18)));
+  }
+
+  function toast(msg, good = true) {
+    const t = byId("toast");
+    t.textContent = msg;
+    t.style.display = "block";
+    t.style.background = good ? "#0d2f2a" : "#3a1020";
+    t.style.border = `1px solid ${good ? "#2de0b1" : "#ff4d7a"}`;
+    setTimeout(() => (t.style.display = "none"), 2500);
+  }
+
+  function getCategories() { return ["All", ...new Set(state.products.map((p) => p.category))]; }
+
+  function getVendors() {
+    const map = {};
+    state.products.forEach((p) => {
+      if (!map[p.vendor]) map[p.vendor] = { name: p.vendor, ratingTotal: 0, count: 0, products: 0, sales: 0 };
+      const v = map[p.vendor];
+      v.ratingTotal += p.rating;
+      v.count += 1;
+      v.products += 1;
+      v.sales += Math.floor(p.stock * p.rating * 0.8);
+    });
+    return Object.values(map).map((v) => ({ ...v, rating: (v.ratingTotal / v.count).toFixed(2) }));
+  }
+
+  function filteredProducts() {
+    return state.products
+      .filter((p) => {
+        const inCategory = state.selectedCategory === "All" || p.category === state.selectedCategory;
+        const inQuery = `${p.name} ${p.vendor} ${p.description}`.toLowerCase().includes(state.search);
+        const inRating = p.rating >= state.minRating;
+        const inMin = state.minPrice == null || p.price >= state.minPrice;
+        const inMax = state.maxPrice == null || p.price <= state.maxPrice;
+        const inShipping = state.shippingFilter === "all" || String(p.shippingDays) === state.shippingFilter || (state.shippingFilter === "3" && p.shippingDays >= 3);
+        return inCategory && inQuery && inRating && inMin && inMax && inShipping;
+      })
+      .sort((a, b) => {
     </aside>
   </div>
 
@@ -713,6 +1013,634 @@
         if (state.sort === "newest") return new Date(b.addedOn) - new Date(a.addedOn);
         return b.rating * b.stock - a.rating * a.stock;
       });
+  }
+
+  function calculateCartTotals() {
+    const subtotal = state.cart.reduce((sum, row) => {
+      const p = state.products.find((x) => x.id === row.id);
+      return sum + (p?.price || 0) * row.qty;
+    }, 0);
+    const tax = Number((subtotal * 0.08).toFixed(2));
+    const shipping = byId("shippingMethod")?.value === "express" ? 12 : 0;
+    const discount = byId("couponCode")?.value.trim().toUpperCase() === "SAVE10" ? Number((subtotal * 0.10).toFixed(2)) : 0;
+    const grand = Number((subtotal + tax + shipping - discount).toFixed(2));
+    return { subtotal, tax, shipping, discount, grand };
+  }
+
+  function renderCategories() {
+    const categories = getCategories();
+    if (!categories.includes(state.selectedCategory)) state.selectedCategory = "All";
+    byId("categoryList").innerHTML = categories.map((cat) =>
+      `<button class="cat-btn ${state.selectedCategory === cat ? "active" : ""}" data-cat="${escapeHtml(cat)}">${escapeHtml(cat)}</button>`
+    ).join("");
+    document.querySelectorAll("#categoryList .cat-btn").forEach((b) => {
+      b.onclick = () => {
+        state.selectedCategory = b.dataset.cat;
+        state.page = 1;
+        render();
+      };
+    });
+  }
+
+  function renderAdminCategories() {
+    const visible = state.user?.role === "admin";
+    byId("adminCategorySection").style.display = visible ? "block" : "none";
+    if (!visible) return;
+    byId("adminCategoryList").innerHTML = getCategories().filter((c) => c !== "All").map((cat) => `
+      <div class="list-item">
+        <div class="row">
+          <input id="rename_${cssSafe(cat)}" value="${escapeHtml(cat)}" />
+          <button class="btn secondary" onclick="renameCategory('${escapeAttr(cat)}')">SAVE</button>
+        </div>
+        <div style="height:6px"></div>
+        <button class="btn danger" style="width:100%" onclick="removeCategory('${escapeAttr(cat)}')">REMOVE CATEGORY</button>
+      </div>
+    `).join("");
+  }
+
+  function renderProducts() {
+    const all = filteredProducts();
+    const pages = Math.max(1, Math.ceil(all.length / state.perPage));
+    state.page = Math.min(state.page, pages);
+    const rows = all.slice((state.page - 1) * state.perPage, state.page * state.perPage);
+    byId("productGrid").innerHTML = rows.map((p) => `
+      <article class="card">
+        <img src="${p.image}" alt="${escapeHtml(p.name)}" loading="lazy" />
+        <div class="cbody">
+          <h3 class="name">${escapeHtml(p.name)}</h3>
+          <p class="muted">${escapeHtml(p.category)} • ${escapeHtml(p.vendor)}</p>
+          <p class="muted">★ ${p.rating} • ${p.shippingDays}-day shipping • ${p.stock} in stock</p>
+          <p class="price">${currency(p.price)}</p>
+          <div class="row">
+            <button class="btn secondary" onclick="viewProduct(${p.id})">DETAILS</button>
+            <button class="btn" onclick="addToCart(${p.id})">ADD TO CART</button>
+          </div>
+          <div style="height:6px"></div>
+          <button class="btn secondary" style="width:100%" onclick="toggleWishlist(${p.id})">${state.wishlist.includes(p.id) ? "REMOVE FROM" : "ADD TO"} WISHLIST</button>
+        </div>
+      </article>
+    `).join("");
+    byId("pageInfo").textContent = `Page ${state.page} of ${pages}`;
+    byId("prevPage").disabled = state.page <= 1;
+    byId("nextPage").disabled = state.page >= pages;
+  }
+
+  function renderCart() {
+    const rows = state.cart.map((r) => {
+      const p = state.products.find((x) => x.id === r.id);
+      return { ...r, name: p?.name || "Unknown", price: p?.price || 0 };
+    });
+
+    byId("cartList").innerHTML = rows.length ? rows.map((r) => `
+      <div class="list-item">
+        <div>${escapeHtml(r.name)}</div>
+        <div class="row" style="margin-top:4px"><span>${r.qty} × ${currency(r.price)}</span><span class="money">${currency(r.qty * r.price)}</span></div>
+        <div class="row" style="margin-top:6px">
+          <button class="btn secondary" onclick="changeQty(${r.id}, -1)">-</button>
+          <button class="btn secondary" onclick="changeQty(${r.id}, 1)">+</button>
+          <button class="btn secondary" onclick="removeFromCart(${r.id})">REMOVE</button>
+        </div>
+      </div>
+    `).join("") : `<p class="muted">Cart is empty.</p>`;
+
+    const totals = calculateCartTotals();
+    byId("cartTotal").textContent = currency(totals.subtotal);
+    byId("cartTax").textContent = currency(totals.tax);
+    byId("cartShipping").textContent = currency(totals.shipping);
+    byId("cartDiscount").textContent = `-${currency(totals.discount)}`;
+    byId("cartGrandTotal").textContent = currency(totals.grand);
+    byId("cartCount").textContent = state.cart.reduce((sum, row) => sum + row.qty, 0);
+  }
+
+  function renderOrders() {
+    byId("orderList").innerHTML = state.orders.length
+      ? state.orders.slice(0, 4).map((o) => `<div class="list-item"><div>#${o.id}</div><div class="muted">${o.date}</div><div class="row"><span>${o.status}</span><span class="money">${currency(o.total)}</span></div></div>`).join("")
+      : `<p class="muted">No orders yet.</p>`;
+  }
+
+  function renderWalletLedger() {
+    byId("walletLedger").innerHTML = state.walletLedger.length
+      ? `<div class="section"><h4 class="title">WALLET LEDGER</h4>${state.walletLedger.slice(0, 4).map((e) => `<div class="list-item"><div class="row"><span>${e.type}</span><span class="money">${currency(e.amount)}</span></div><div class="muted">${e.date}</div></div>`).join("")}</div>`
+      : "";
+  }
+
+  function renderCoinflipHistory() {
+    byId("coinflipHistory").innerHTML = state.coinflipHistory.length
+      ? state.coinflipHistory.slice(0, 4).map((h) => `<div class="list-item"><div class="row"><span>${h.pick} vs ${h.result}</span><span>${h.outcome}</span></div><div class="row"><span>${h.date}</span><span class="money">${currency(h.amount)}</span></div></div>`).join("")
+      : `<p class="muted">No bets yet.</p>`;
+  }
+
+  function renderChatFeed() {
+    byId("chatFeed").innerHTML = state.chatFeed.slice(0, 7).map((m) => `<div class="list-item"><div class="row"><span>${escapeHtml(m.user)}</span><span class="muted">${m.time}</span></div><div>${escapeHtml(m.text)}</div></div>`).join("") || `<p class="muted">Feed warming up...</p>`;
+  }
+
+  function getVendorName() {
+    if (state.user?.display?.includes("@")) return state.user.display.split("@")[0] || "Vendor";
+    if (state.user?.role === "admin") return "NexusAdminStore";
+    return state.user?.display || "Vendor";
+  }
+
+  function renderVendorConsole() {
+    const show = state.user && ["vendor", "admin"].includes(state.user.role);
+    byId("vendorConsole").style.display = show ? "block" : "none";
+    if (!show) return;
+    const vendorName = getVendorName();
+    const sales = state.orders.reduce((sum, o) => sum + o.items.reduce((s, i) => {
+      const p = state.products.find((x) => x.id === i.id);
+      return p && p.vendor === vendorName ? s + p.price * i.qty : s;
+    }, 0), 0);
+    const listings = state.products.filter((p) => p.vendor === vendorName).length;
+    byId("vendorStats").innerHTML = `<div class="section"><p class="muted">Vendor: ${escapeHtml(vendorName)}</p><p class="muted">Listings: ${listings}</p><p class="muted">Sales volume: <span class="money">${currency(sales)}</span></p></div>`;
+  }
+
+  function renderAccount() {
+    const inUser = Boolean(state.user);
+    const display = inUser ? `${state.user.display} (${state.user.role.toUpperCase()})` : "Guest";
+    byId("accountBlock").innerHTML = inUser ? `<p>Signed in as <strong>${escapeHtml(display)}</strong></p>` : `<p>Browsing as guest. Sign in to checkout.</p>`;
+    byId("authToggleBtn").textContent = inUser ? "Logout" : "Sign In";
+    byId("walletBalance").textContent = currency(state.wallet);
+    byId("wishlistCount").textContent = state.wishlist.length;
+    byId("statProducts").textContent = state.products.length;
+    byId("statVendors").textContent = getVendors().length;
+    byId("statOrders").textContent = state.orders.length;
+    byId("statUsers").textContent = Object.keys(state.users).length + (state.adminFingerprint ? 1 : 0);
+  }
+
+  function renderProfile() {
+    if (!state.user) {
+      byId("profileView").innerHTML = `<p class="muted">Please sign in first.</p>`;
+      return;
+    }
+    const p = state.user.profile || { name: "", phone: "", address: "" };
+    byId("profileView").innerHTML = `
+      <div class="list-item">
+        <p><strong>${escapeHtml(state.user.display)}</strong></p>
+        <p class="muted">Role: ${state.user.role}</p>
+      </div>
+      <div class="section">
+        <h4 class="title">EDIT PROFILE</h4>
+        <input id="profileName" value="${escapeHtml(p.name || "")}" placeholder="Full name" />
+        <div style="height:8px"></div>
+        <input id="profilePhone" value="${escapeHtml(p.phone || "")}" placeholder="Phone" />
+        <div style="height:8px"></div>
+        <textarea id="profileAddress" rows="3" placeholder="Default shipping address">${escapeHtml(p.address || "")}</textarea>
+        <div style="height:8px"></div>
+        <button class="btn" id="saveProfileBtn">SAVE PROFILE</button>
+      </div>
+    `;
+    byId("saveProfileBtn").onclick = saveProfile;
+  }
+
+  function renderLeaderboard() {
+    const vendors = getVendors().sort((a, b) => b.sales - a.sales).slice(0, 10);
+    byId("leaderboardView").innerHTML = vendors.map((v, idx) => `
+      <div class="list-item">
+        <div class="row"><span>#${idx + 1} ${escapeHtml(v.name)}</span><span>★ ${v.rating}</span></div>
+        <div class="muted">${v.products} products • ${v.sales.toLocaleString()} modeled sales</div>
+      </div>
+    `).join("");
+  }
+
+  function render() {
+    renderCategories();
+    renderAdminCategories();
+    renderProducts();
+    renderCart();
+    renderOrders();
+    renderWalletLedger();
+    renderCoinflipHistory();
+    renderChatFeed();
+    renderVendorConsole();
+    renderAccount();
+    persist();
+  }
+
+  function addLedger(type, amount) {
+    state.walletLedger.unshift({ type, amount, date: new Date().toLocaleString() });
+  }
+
+  function addToCart(id) {
+    const p = state.products.find((x) => x.id === id);
+    if (!p) return;
+    const r = state.cart.find((x) => x.id === id);
+    if (r) r.qty += 1;
+    else state.cart.push({ id, qty: 1 });
+    render();
+    toast(`${p.name} added to cart.`);
+  }
+
+  function removeFromCart(id) {
+    state.cart = state.cart.filter((x) => x.id !== id);
+    render();
+    toast("Item removed.");
+  }
+
+  function changeQty(id, delta) {
+    const row = state.cart.find((x) => x.id === id);
+    if (!row) return;
+    row.qty += delta;
+    if (row.qty <= 0) state.cart = state.cart.filter((x) => x.id !== id);
+    render();
+  }
+
+  function toggleWishlist(id) {
+    if (state.wishlist.includes(id)) state.wishlist = state.wishlist.filter((x) => x !== id);
+    else state.wishlist.push(id);
+    render();
+    toast("Wishlist updated.");
+  }
+
+  function checkout() {
+    if (!state.user) return toast("Sign in required before checkout.", false);
+    if (!state.cart.length) return toast("Your cart is empty.", false);
+    const recipient = byId("shipName").value.trim();
+    const address = byId("shipAddress").value.trim();
+    if (!recipient || !address) return toast("Shipping info required.", false);
+
+    const totals = calculateCartTotals();
+    if (state.wallet < totals.grand) return toast("Insufficient balance.", false);
+
+    state.wallet = Number((state.wallet - totals.grand).toFixed(2));
+    addLedger("Checkout", -totals.grand);
+
+    const orderId = `SN-${Date.now().toString().slice(-8)}`;
+    state.orders.unshift({
+      id: orderId,
+      date: new Date().toLocaleString(),
+      status: "Processing",
+      recipient,
+      address,
+      payment: byId("paymentMethod").value,
+      shippingMethod: byId("shippingMethod").value,
+      items: state.cart.map((x) => ({ ...x })),
+      subtotal: totals.subtotal,
+      tax: totals.tax,
+      shipping: totals.shipping,
+      discount: totals.discount,
+      total: totals.grand
+    });
+
+    state.cart = [];
+    byId("shipName").value = "";
+    byId("shipAddress").value = "";
+    byId("couponCode").value = "";
+    byId("shippingMethod").value = "standard";
+    render();
+    toast(`Order ${orderId} placed.`);
+  }
+
+  function viewProduct(id) {
+    const p = state.products.find((x) => x.id === id);
+    if (!p) return;
+    byId("productModalContent").innerHTML = `
+      <div class="detail-grid">
+        <img src="${p.image}" alt="${escapeHtml(p.name)}" style="width:100%;min-height:240px;object-fit:cover;border-radius:8px" />
+        <div>
+          <h2 class="title" style="font-size:24px">${escapeHtml(p.name)}</h2>
+          <p class="muted">Vendor: ${escapeHtml(p.vendor)}</p>
+          <p class="muted">Category: ${escapeHtml(p.category)}</p>
+          <p class="muted">Rating: ★ ${p.rating}</p>
+          <p class="muted">Shipping ETA: ${p.shippingDays} day(s)</p>
+          <p class="muted">Stock: ${p.stock}</p>
+          <p style="margin:10px 0">${escapeHtml(p.description)}</p>
+          <h3 class="price">${currency(p.price)}</h3>
+          <div class="row" style="margin-top:10px">
+            <button class="btn" onclick="addToCart(${p.id});closeModal('productModal')">ADD TO CART</button>
+            <button class="btn secondary" onclick="toggleWishlist(${p.id})">WISHLIST</button>
+          </div>
+        </div>
+      </div>
+    `;
+    openModal("productModal");
+  }
+
+  function fingerprintFromPGP(text) {
+    let hash = 0;
+    for (let i = 0; i < text.length; i += 1) hash = ((hash << 5) - hash + text.charCodeAt(i)) | 0;
+    return `PGP-${Math.abs(hash).toString(16).toUpperCase().padStart(8, "0")}`;
+  }
+
+  function loginWithPGP() {
+    const key = byId("pgpKeyInput").value.trim();
+    if (!key.includes("BEGIN PGP PUBLIC KEY BLOCK") || !key.includes("END PGP PUBLIC KEY BLOCK")) return toast("Invalid PGP key format.", false);
+    const fp = fingerprintFromPGP(key);
+    if (!state.adminFingerprint) state.adminFingerprint = fp;
+    const role = state.adminFingerprint === fp ? "admin" : "member";
+    state.user = { role, display: fp, profile: state.user?.profile || { name: "", phone: "", address: "" } };
+    closeModal("authModal");
+    render();
+    toast(role === "admin" ? `Admin recognized (${fp}).` : `PGP login success (${fp}).`);
+  }
+
+  function registerEmail() {
+    const email = byId("authEmail").value.trim().toLowerCase();
+    const pass = byId("authPassword").value;
+    const role = byId("authRole").value;
+    if (!email || !pass) return toast("Email and password required.", false);
+    if (state.users[email]) return toast("Account already exists.", false);
+    state.users[email] = { email, pass, role, profile: { name: "", phone: "", address: "" } };
+    persist();
+    toast("Account created.");
+  }
+
+  function loginEmail() {
+    const email = byId("authEmail").value.trim().toLowerCase();
+    const pass = byId("authPassword").value;
+    const account = state.users[email];
+    if (!account || account.pass !== pass) return toast("Invalid credentials.", false);
+    state.user = { role: account.role, display: email, profile: account.profile || { name: "", phone: "", address: "" } };
+    closeModal("authModal");
+    render();
+    toast("Logged in.");
+  }
+
+  function logoutOrOpenAuth() {
+    if (!state.user) return openModal("authModal");
+    if (state.user.display.includes("@") && state.users[state.user.display]) {
+      state.users[state.user.display].profile = state.user.profile || {};
+    }
+    state.user = null;
+    render();
+    toast("Logged out.");
+  }
+
+  function saveProfile() {
+    if (!state.user) return;
+    state.user.profile = {
+      name: byId("profileName").value.trim(),
+      phone: byId("profilePhone").value.trim(),
+      address: byId("profileAddress").value.trim()
+    };
+    if (state.user.display.includes("@") && state.users[state.user.display]) {
+      state.users[state.user.display].profile = state.user.profile;
+    }
+    persist();
+    toast("Profile saved.");
+  }
+
+  function renameCategory(oldName) {
+    if (state.user?.role !== "admin") return toast("Admin required.", false);
+    const next = byId(`rename_${cssSafe(oldName)}`)?.value.trim();
+    if (!next || next === "All") return toast("Invalid name.", false);
+    if (getCategories().includes(next) && next !== oldName) return toast("Category exists.", false);
+    state.products = state.products.map((p) => p.category === oldName ? { ...p, category: next } : p);
+    if (state.selectedCategory === oldName) state.selectedCategory = next;
+    render();
+    toast(`Renamed to ${next}.`);
+  }
+
+  function removeCategory(cat) {
+    if (state.user?.role !== "admin") return toast("Admin required.", false);
+    const fallback = "Uncategorized";
+    state.products = state.products.map((p) => p.category === cat ? { ...p, category: fallback } : p);
+    if (state.selectedCategory === cat) state.selectedCategory = "All";
+    render();
+    toast(`Category ${cat} retired.`);
+  }
+
+  function addCategory() {
+    if (state.user?.role !== "admin") return toast("Admin required.", false);
+    const name = byId("newCategoryName").value.trim();
+    if (!name || name === "All") return toast("Invalid category.", false);
+    if (getCategories().includes(name)) return toast("Category exists.", false);
+
+    const nextId = Math.max(...state.products.map((p) => p.id)) + 1;
+    state.products.push({
+      id: nextId,
+      name: `${name} Starter Item`,
+      price: 59,
+      category: name,
+      vendor: getVendorName(),
+      rating: 4.3,
+      shippingDays: 2,
+      image: "https://picsum.photos/seed/newcat/800/520",
+      description: `Admin-created starter listing for ${name}.`,
+      stock: 20,
+      addedOn: new Date().toISOString().slice(0, 10)
+    });
+    byId("newCategoryName").value = "";
+    render();
+    toast(`Category ${name} created.`);
+  }
+
+  function addVendorListing() {
+    if (!state.user || !["vendor", "admin"].includes(state.user.role)) return toast("Vendor access required.", false);
+    const name = byId("vendorProductName").value.trim();
+    const price = Number(byId("vendorProductPrice").value);
+    const category = byId("vendorProductCategory").value.trim();
+    const stock = Number(byId("vendorProductStock").value);
+    if (!name || !category || !price || !stock) return toast("Complete all vendor listing fields.", false);
+
+    const nextId = Math.max(...state.products.map((p) => p.id)) + 1;
+    state.products.unshift({
+      id: nextId,
+      name,
+      price,
+      category,
+      vendor: getVendorName(),
+      rating: 4.5,
+      shippingDays: 2,
+      image: `https://picsum.photos/seed/vendor${nextId}/800/520`,
+      description: `Vendor listing by ${getVendorName()}.`,
+      stock,
+      addedOn: new Date().toISOString().slice(0, 10)
+    });
+
+    byId("vendorProductName").value = "";
+    byId("vendorProductPrice").value = "";
+    byId("vendorProductCategory").value = "";
+    byId("vendorProductStock").value = "";
+    render();
+    toast("Listing added successfully.");
+  }
+
+  function runCoinflip() {
+    const amount = Number(byId("coinflipAmount").value);
+    const pick = byId("coinflipPick").value;
+    if (!state.user) return toast("Sign in required to bet.", false);
+    if (!Number.isFinite(amount) || amount <= 0) return toast("Enter valid amount.", false);
+    if (amount > state.wallet) return toast("Bet exceeds balance.", false);
+
+    state.wallet = Number((state.wallet - amount).toFixed(2));
+    const result = Math.random() < 0.5 ? "Heads" : "Tails";
+    const isWin = result === pick;
+    if (isWin) state.wallet = Number((state.wallet + amount * 2).toFixed(2));
+    addLedger(`Coinflip ${isWin ? "Win" : "Loss"}`, isWin ? amount : -amount);
+
+    state.coinflipHistory.unshift({ amount, pick, result, outcome: isWin ? "WIN" : "LOSS", date: new Date().toLocaleTimeString() });
+
+    const coin = byId("coinVisual");
+    coin.textContent = "...";
+    coin.classList.remove("flipping");
+    void coin.offsetWidth;
+    coin.classList.add("flipping");
+
+    byId("coinflipResultText").textContent = "Flipping...";
+    openModal("coinflipModal");
+
+    setTimeout(() => {
+      coin.textContent = result;
+      byId("coinflipResultText").textContent = `You picked ${pick}. Coin landed ${result}. ${isWin ? "You won!" : "You lost."}`;
+      render();
+    }, 1750);
+  }
+
+  function fillVendorsModal() {
+    byId("vendorsList").innerHTML = getVendors().map((v) => `
+      <div class="list-item">
+        <div class="row"><strong>${escapeHtml(v.name)}</strong><span>★ ${v.rating}</span></div>
+        <div class="muted">${v.products} products • ${v.sales.toLocaleString()} modeled sales</div>
+      </div>
+    `).join("");
+  }
+
+  function fillFeaturesModal() {
+    byId("featuresList").innerHTML = featureList.map((f) => `<li class="list-item">${escapeHtml(f)}</li>`).join("");
+  }
+
+  const simulatedUsers = ["byte_hound", "nova_13", "luna_ops", "gearhunter", "pulse_zen", "atlas-cart", "neonbuyer", "pixelfox"];
+  const simulatedMessages = [
+    "Just received my order, packaging was perfect.",
+    "Price drop alert on Electronics right now.",
+    "Anyone tried the new Aurora Notebook Pro?",
+    "Fast shipping this week from NexusGear.",
+    "Coupon SAVE10 worked at checkout.",
+    "Looking for recommendations in Home category.",
+    "Order status updated to shipped.",
+    "Adding another item to wishlist."
+  ];
+
+  function pushSimulatedFeedMessage() {
+    const user = simulatedUsers[Math.floor(Math.random() * simulatedUsers.length)];
+    const text = simulatedMessages[Math.floor(Math.random() * simulatedMessages.length)];
+    state.chatFeed.unshift({ user, text, time: new Date().toLocaleTimeString() });
+    state.chatFeed = state.chatFeed.slice(0, 18);
+    renderChatFeed();
+    persist();
+  }
+
+  function openModal(id) { byId(id).style.display = "flex"; }
+  function closeModal(id) { byId(id).style.display = "none"; }
+
+  // global hooks for inline onclick
+  window.viewProduct = viewProduct;
+  window.addToCart = addToCart;
+  window.removeFromCart = removeFromCart;
+  window.changeQty = changeQty;
+  window.toggleWishlist = toggleWishlist;
+  window.renameCategory = renameCategory;
+  window.removeCategory = removeCategory;
+  window.closeModal = closeModal;
+
+  byId("searchInput").oninput = (e) => { state.search = e.target.value.toLowerCase().trim(); state.page = 1; render(); };
+  byId("sortSelect").onchange = (e) => { state.sort = e.target.value; render(); };
+  byId("minRating").onchange = (e) => { state.minRating = Number(e.target.value); state.page = 1; render(); };
+  byId("shippingFilter").onchange = (e) => { state.shippingFilter = e.target.value; state.page = 1; render(); };
+  byId("minPrice").oninput = (e) => { state.minPrice = e.target.value ? Number(e.target.value) : null; state.page = 1; render(); };
+  byId("maxPrice").oninput = (e) => { state.maxPrice = e.target.value ? Number(e.target.value) : null; state.page = 1; render(); };
+
+  byId("shippingMethod").onchange = () => renderCart();
+  byId("couponCode").oninput = () => renderCart();
+
+  byId("clearFilters").onclick = () => {
+    state.selectedCategory = "All";
+    state.search = "";
+    state.sort = "featured";
+    state.minRating = 0;
+    state.minPrice = null;
+    state.maxPrice = null;
+    state.shippingFilter = "all";
+    state.page = 1;
+    byId("searchInput").value = "";
+    byId("sortSelect").value = "featured";
+    byId("minRating").value = "0";
+    byId("shippingFilter").value = "all";
+    byId("minPrice").value = "";
+    byId("maxPrice").value = "";
+    render();
+  };
+
+  byId("prevPage").onclick = () => { if (state.page > 1) { state.page -= 1; render(); } };
+  byId("nextPage").onclick = () => {
+    const pages = Math.ceil(filteredProducts().length / state.perPage);
+    if (state.page < pages) { state.page += 1; render(); }
+  };
+
+  byId("depositBtn").onclick = () => {
+    const amount = Number(byId("depositAmount").value);
+    if (!Number.isFinite(amount) || amount <= 0) return toast("Enter valid amount.", false);
+    state.wallet = Number((state.wallet + amount).toFixed(2));
+    addLedger("Deposit", amount);
+    render();
+    toast(`${currency(amount)} deposited.`);
+  };
+
+  byId("withdrawBtn").onclick = () => {
+    const amount = Number(byId("withdrawAmount").value);
+    if (!Number.isFinite(amount) || amount <= 0) return toast("Enter valid amount.", false);
+    if (amount > state.wallet) return toast("Insufficient balance.", false);
+    state.wallet = Number((state.wallet - amount).toFixed(2));
+    addLedger("Withdraw", -amount);
+    render();
+    toast(`${currency(amount)} withdrawn.`);
+  };
+
+  byId("checkoutBtn").onclick = checkout;
+  byId("coinflipBtn").onclick = runCoinflip;
+  byId("registerBtn").onclick = registerEmail;
+  byId("loginBtn").onclick = loginEmail;
+  byId("pgpLoginBtn").onclick = loginWithPGP;
+  byId("authToggleBtn").onclick = logoutOrOpenAuth;
+  byId("addCategoryBtn").onclick = addCategory;
+  byId("addVendorProductBtn").onclick = addVendorListing;
+
+  byId("wishlistBtn").onclick = () => {
+    if (!state.wishlist.length) return toast("Wishlist empty.", false);
+    const names = state.wishlist.map((id) => state.products.find((p) => p.id === id)?.name).filter(Boolean);
+    toast(`Wishlist: ${names.slice(0, 3).join(", ")}${names.length > 3 ? "..." : ""}`);
+  };
+
+  byId("cartBtn").onclick = () => document.querySelector("aside.right").scrollIntoView({ behavior: "smooth" });
+
+  document.querySelectorAll("#mainNav button").forEach((btn) => {
+    btn.onclick = () => {
+      document.querySelectorAll("#mainNav button").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+      const action = btn.dataset.action;
+
+      if (btn.dataset.view === "home") window.scrollTo({ top: 0, behavior: "smooth" });
+      if (action === "openCategories") byId("categoryPane").scrollIntoView({ behavior: "smooth" });
+      if (action === "openVendors") { fillVendorsModal(); openModal("vendorsModal"); }
+      if (action === "openFeatures") { fillFeaturesModal(); openModal("featuresModal"); }
+      if (action === "openProfile") { renderProfile(); openModal("profileModal"); }
+      if (action === "openLeaderboard") { renderLeaderboard(); openModal("leaderboardModal"); }
+      if (action === "openAuth") openModal("authModal");
+    };
+  });
+
+  ["productModal", "vendorsModal", "featuresModal", "profileModal", "authModal", "coinflipModal", "leaderboardModal"].forEach((id) => {
+    byId(id).addEventListener("click", (e) => {
+      if (e.target.id === id) closeModal(id);
+    });
+  });
+
+  function selfCheck() {
+    const totals = calculateCartTotals();
+    const computed = Number((totals.subtotal + totals.tax + totals.shipping - totals.discount).toFixed(2));
+    if (computed !== totals.grand) {
+      console.error("Accounting mismatch", { totals, computed });
+      toast("Accounting check failed", false);
+    }
+  }
+
+  if (!state.chatFeed.length) {
+    for (let i = 0; i < 6; i += 1) pushSimulatedFeedMessage();
+  }
+  setInterval(pushSimulatedFeedMessage, 6000);
+
+  render();
+  selfCheck();
+</script>
     }
 
     function renderCategories() {
